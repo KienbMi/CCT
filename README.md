@@ -1,2 +1,2 @@
-# CKT
-Corona-Kontakttracing
+# CCT
+Corona-Contakttracing
