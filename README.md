@@ -1,4 +1,4 @@
-# CCT
+# CCT - Corona-Contact-Tracing
 
 This simple solution uses a NFC Reader and NFC-Chips to easily get contact information from customers in restaurants, visitors at sporting events and so on.
 
