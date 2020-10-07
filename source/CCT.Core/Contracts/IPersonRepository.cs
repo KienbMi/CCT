@@ -11,5 +11,9 @@ namespace CCT.Core.Contracts
         Task AddPersonAsync(Person person);
 
         Task<Person[]> GetAllPersonAsync();
+
+        Task<Person> GetPersonByPhoneNumberAsync(string phoneNumber);
+        Task<Person[]> GetPersonsByDateAsync(DateTime date);
+        Task<Person[]> GetPersonsForTodayAsync();
     }
 }

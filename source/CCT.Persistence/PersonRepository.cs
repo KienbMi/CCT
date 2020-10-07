@@ -26,5 +26,19 @@ namespace CCT.Persistence
             => await _dbContext.Persons
                 .OrderBy(p => p.RecordTime)
                 .ToArrayAsync();
+        public async Task<Person> GetPersonByPhoneNumberAsync(string phoneNumber)
+            => await _dbContext.Persons
+                .Where(p => p.PhoneNumber == phoneNumber)
+                .FirstOrDefaultAsync();
+
+        public async Task<Person[]> GetPersonsByDateAsync(DateTime date)
+            => await _dbContext.Persons
+                .Where(p => p.RecordTime.Date == date.Date)
+                .ToArrayAsync();
+
+        public async Task<Person[]> GetPersonsForTodayAsync()
+            => await _dbContext.Persons
+                .Where(p => p.RecordTime.Date == DateTime.Today.Date)
+                .ToArrayAsync();
     }
 }
