@@ -1,4 +1,5 @@
 using System;
+using System.Security.Policy;
 using System.Text;
 
 namespace uFR
@@ -312,12 +313,12 @@ namespace uFR
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetDllDirectory(string lpPathName);
 
-#if true
+#if WIN64
         const string DLL_PATH = ""; //@"..\..\..\ufr-lib\windows\x86_64\";
         const string NAME_DLL = "uFCoder-x86_64.dll";
 
 #else
-        const string DLL_PATH = ""//; @"..\..\ufr-lib\windows\x86\";
+        const string DLL_PATH = "";//; @"..\..\ufr-lib\windows\x86\";
         const string NAME_DLL = "uFCoder-x86.dll";
 #endif
         const string DLL_NAME = DLL_PATH + NAME_DLL;
@@ -333,7 +334,7 @@ namespace uFR
             String uFR_NotOpenedMessage;
 
 
-#if true
+#if WIN64
             string DllPath = @"lib\windows\x86_64"; // for x64 target
             string name = "uFCoder-x86_64.dll";
 #else
