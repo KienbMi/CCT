@@ -3,6 +3,7 @@ using CCT.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,10 +22,9 @@ namespace ufr_mfp_examples_c_sharp_console
             byte[] old_uid = new byte[10];
             char c;
 
-            await StartDatabaseTestAsync();
+            //await StartDatabaseTestAsync();
 
-            // ToDo Autostartup
-            // ToDo 
+            // ToDo Autostartup 
 
             Functions.reader_open();
             Functions.usage();
@@ -46,7 +46,7 @@ namespace ufr_mfp_examples_c_sharp_console
                                     old_sak = sak;
                                     old_uid_size = uid_size;
                                     Array.Copy(uid, old_uid, uid.Length);
-                                    Functions.New_card_in_field(sak, ref uid, uid_size);
+                                    //Functions.New_card_in_field(sak, ref uid, uid_size);
                                 }
                             }
                             else
@@ -54,7 +54,8 @@ namespace ufr_mfp_examples_c_sharp_console
                                 old_sak = sak;
                                 old_uid_size = uid_size;
                                 Array.Copy(uid, old_uid, uid.Length);
-                                Functions.New_card_in_field(sak, ref uid, uid_size);
+                                //Functions.New_card_in_field(sak, ref uid, uid_size);
+                                await StartLinearReadAsync();
                                 card_in_field = true;
                             }
 
@@ -127,6 +128,82 @@ namespace ufr_mfp_examples_c_sharp_console
             Console.WriteLine();
             Console.Write("Beenden mit Eingabetaste ...");
             Console.ReadLine();
+        }
+
+        private static async Task StartLinearReadAsync()
+        {
+            const int IDX_FIRSTNAME = 0;
+            const int IDX_LASTNAME = 1;
+            const int IDX_PHONENUMBER = 2;
+
+            //authenticate
+            const byte MIFARE_AUTHENT1A = 0x60;
+
+            //signaling
+            const byte FRES_OK_LIGHT = 0x00,
+                       FERR_LIGHT = 0x02,
+                       FRES_OK_SOUND = 0x02,
+                       FERR_SOUND = 0x00;
+
+            try
+            {
+                ushort ushLinearAddress = 0;
+                ushort ushDataLength = 100;
+                byte[] baReadData = new byte[ushDataLength];
+                ushort ushBytesRet = 0;
+                byte bAuthMode = MIFARE_AUTHENT1A;
+                byte bKeyIndex = 0;
+                DL_STATUS iFResult;
+
+                iFResult = uFCoder.LinearRead(baReadData, ushLinearAddress, ushDataLength, out ushBytesRet, bAuthMode, bKeyIndex);               
+
+                if (iFResult == uFR.DL_STATUS.UFR_OK)
+                {
+                    string nfcInput = System.Text.Encoding.Default.GetString(baReadData);
+                    string[] data = nfcInput.Split(";");
+
+                    if (data != null && data.Length >= 2)
+                    {
+                        Console.WriteLine(nfcInput);
+                        uFCoder.ReaderUISignal(FRES_OK_LIGHT, FRES_OK_SOUND);
+
+                        Person person = new Person
+                        {
+                            FirstName = data[IDX_FIRSTNAME],
+                            LastName = data[IDX_LASTNAME],
+                            PhoneNumber = data[IDX_PHONENUMBER],
+                            RecordTime = DateTime.Now
+                        };
+
+                        using (UnitOfWork unitOfWork = new UnitOfWork())
+                        {
+                            await unitOfWork.PersonRepository.AddPersonAsync(person);
+                            int savedRows = await unitOfWork.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                    }
+                }
+                else
+                {
+                    uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                }
+
+            }
+            catch (System.FormatException ex)
+            {
+                Console.WriteLine($"Error:");
+                Console.WriteLine($"{ex.Message}");
+                
+                Exception run = ex.InnerException;
+                while (run != null)
+                {
+                    Console.WriteLine($"{ex.Message}");
+                    run = run.InnerException;
+                }
+            }
         }
     }
 }

@@ -4051,8 +4051,7 @@ namespace ufr_mfp_examples_c_sharp_console
             Array.Copy(uid, shorter_uid, uid_size);
 
             Console.WriteLine(" \a-------------------------------------------------------------------");
-            Console.WriteLine(" Card type: " + (DLOGIC_CARD_TYPE)dl_card_type + ", sak = 0x" + sak.ToString("X2") + ", uid[" + uid_size.ToString() + "] = " + BitConverter.ToString(shorter_uid).Replace("-", ":"));
-            //ToDo Copy Person in Database 
+            Console.WriteLine(" Card type: " + (DLOGIC_CARD_TYPE)dl_card_type + ", sak = 0x" + sak.ToString("X2") + ", uid[" + uid_size.ToString() + "] = " + BitConverter.ToString(shorter_uid).Replace("-", ":")); 
 
             return uFR.DL_STATUS.UFR_OK;
         }

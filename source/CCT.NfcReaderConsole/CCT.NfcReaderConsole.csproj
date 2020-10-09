@@ -16,4 +16,13 @@
     <ProjectReference Include="..\CCT.Persistence\CCT.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="uFCoder-x86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="uFCoder-x86_64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
