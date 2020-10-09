@@ -140,10 +140,10 @@ namespace ufr_mfp_examples_c_sharp_console
             const byte MIFARE_AUTHENT1A = 0x60;
 
             //signaling
-            const byte FRES_OK_LIGHT = 0x00,
-                       FERR_LIGHT = 0x02,
-                       FRES_OK_SOUND = 0x02,
-                       FERR_SOUND = 0x00;
+            const byte FRES_OK_LIGHT = 0x01,    // long green
+                       FERR_LIGHT = 0x02,       // long red
+                       FRES_OK_SOUND = 0x01,    // short
+                       FERR_SOUND = 0x00;       // none
 
             try
             {
