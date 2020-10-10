@@ -1,7 +1,7 @@
 # CCT - Corona-Contact-Tracing
 
-![.NET Core](https://https://github.com/KienbMi/CCT/workflows/.NET%20Core/badge.svg)
-[![GitHub issues open](https://img.shields.io/github/issues/network-tools/shconfparser.svg)](https://https://github.com/KienbMi/CCT/issues)
+![.NET Core](https://github.com/KienbMi/CCT/workflows/.NET%20Core/badge.svg)
+[![GitHub issues open](https://img.shields.io/github/issues/network-tools/shconfparser.svg)](https://github.com/KienbMi/CCT/issues)
 
 This simple solution uses a NFC Reader and NFC-Chips to easily get contact information from customers in restaurants, visitors at sporting events and so on.
 
