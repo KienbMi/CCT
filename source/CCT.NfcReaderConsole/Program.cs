@@ -20,7 +20,7 @@ namespace ufr_mfp_examples_c_sharp_console
             byte sak = 0, uid_size = 0, old_sak = 0, old_uid_size = 0;
             byte[] uid = new byte[10];
             byte[] old_uid = new byte[10];
-            char c;
+            char c
 
             //await StartDatabaseTestAsync();
 
