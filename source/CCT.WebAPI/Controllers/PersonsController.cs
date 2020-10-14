@@ -104,6 +104,11 @@ namespace CCT.WebAPI.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Posts a person to the DB
+        /// </summary>
+        /// <param name="personDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
