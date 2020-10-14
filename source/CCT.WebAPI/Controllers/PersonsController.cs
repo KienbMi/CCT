@@ -119,13 +119,14 @@ namespace CCT.WebAPI.Controllers
                     PhoneNumber = personDto.PhoneNumber,
                     RecordTime = DateTime.Now
                 });
+
+                await _unitOfWork.SaveChangesAsync();
             }
             catch(Exception e)
             {
                 return BadRequest(e.Message);
             }
             
-
             return CreatedAtAction("PostPerson", personDto);
         }
     }
