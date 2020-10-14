@@ -50,7 +50,7 @@ namespace CCT.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("{phoneNumber}")]
+        [Route("phone/{phoneNumber}")]
         public async Task<ActionResult> GetPersonByPhoneNumber(string phoneNumber)
         {
             var person = await _unitOfWork.PersonRepository.GetPersonByPhoneNumberAsync(phoneNumber);
@@ -60,7 +60,18 @@ namespace CCT.WebAPI.Controllers
                 return Ok(person);
             }
 
-            return NotFound();
+            return NotFound(phoneNumber);
+        }
+
+        private string CleanPhoneNumber(string phoneNumber)
+        {
+            if(phoneNumber.Contains("/"))
+            {
+                string cleanString = phoneNumber.Replace("/", string.Empty);
+                return cleanString;
+            }
+
+            return phoneNumber;
         }
 
         /// <summary>
@@ -71,7 +82,7 @@ namespace CCT.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("{date}")]
+        [Route("date/{date}")]
         public async Task<ActionResult> GetPersonsByDate(DateTime date)
         {
             var persons = await _unitOfWork.PersonRepository.GetPersonsByDateAsync(date);
@@ -91,7 +102,7 @@ namespace CCT.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("/today")]
+        [Route("today")]
         public async Task<ActionResult> GetPersonsForToday()
         {
             var persons = await _unitOfWork.PersonRepository.GetPersonsForTodayAsync();
@@ -114,6 +125,8 @@ namespace CCT.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> PostPerson(PersonDto personDto)
         {
+            string cleanedNumber = CleanPhoneNumber(personDto.PhoneNumber);
+
             try
             {
                 await _unitOfWork.PersonRepository
@@ -121,7 +134,7 @@ namespace CCT.WebAPI.Controllers
                 {
                     FirstName = personDto.FirstName,
                     LastName = personDto.LastName,
-                    PhoneNumber = personDto.PhoneNumber,
+                    PhoneNumber = cleanedNumber,
                     RecordTime = DateTime.Now
                 });
 

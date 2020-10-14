@@ -28,7 +28,7 @@ namespace CCT.Persistence
                 .ToArrayAsync();
         public async Task<Person> GetPersonByPhoneNumberAsync(string phoneNumber)
             => await _dbContext.Persons
-                .Where(p => p.PhoneNumber == phoneNumber)
+                .Where(p => p.PhoneNumber.Equals(phoneNumber))
                 .FirstOrDefaultAsync();
 
         public async Task<Person[]> GetPersonsByDateAsync(DateTime date)
