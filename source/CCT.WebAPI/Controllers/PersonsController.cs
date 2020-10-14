@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CCT.Core.Contracts;
+using CCT.Core.Entities;
+using CCT.WebAPI.DataTransferObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,7 @@ namespace CCT.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("{phoneNumber}")]
-        public async Task<ActionResult> GetPersonByName(string phoneNumber)
+        public async Task<ActionResult> GetPersonByPhoneNumber(string phoneNumber)
         {
             var person = await _unitOfWork.PersonRepository.GetPersonByPhoneNumberAsync(phoneNumber);
 
@@ -100,6 +102,31 @@ namespace CCT.WebAPI.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> PostPerson(PersonDto personDto)
+        {
+            try
+            {
+                await _unitOfWork.PersonRepository
+                .AddPersonAsync(new Person
+                {
+                    FirstName = personDto.FirstName,
+                    LastName = personDto.LastName,
+                    PhoneNumber = personDto.PhoneNumber,
+                    RecordTime = DateTime.Now
+                });
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
+
+            return CreatedAtAction("PostPerson", personDto);
         }
     }
 }
