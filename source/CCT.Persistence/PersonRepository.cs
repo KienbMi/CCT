@@ -1,6 +1,6 @@
 ﻿using CCT.Core.Contracts;
 using CCT.Core.Entities;
-using ClubAdministration.Persistence;
+using CCT.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

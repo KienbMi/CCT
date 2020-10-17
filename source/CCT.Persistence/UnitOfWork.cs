@@ -1,5 +1,5 @@
 ﻿using CCT.Core.Contracts;
-using ClubAdministration.Persistence;
+using CCT.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,12 @@ namespace CCT.Persistence
         public UnitOfWork()
         {
             _dbContext = new ApplicationDbContext();
+            PersonRepository = new PersonRepository(_dbContext);
+        }
+
+        public UnitOfWork(ApplicationDbContext dbContext)
+        {            
+            _dbContext = dbContext;
             PersonRepository = new PersonRepository(_dbContext);
         }
 

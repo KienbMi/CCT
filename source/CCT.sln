@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCT.NfcReaderConsole", "CCT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCT.WebAPI", "CCT.WebAPI\CCT.WebAPI.csproj", "{B3F2D802-75A0-4543-B5E2-8650A8ECA935}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCT.NfcReaderConsole.Test", "CCT.NfcReaderConsole.Test\CCT.NfcReaderConsole.Test.csproj", "{53B0CAD0-5765-4230-822C-C4C9C288BE75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{B3F2D802-75A0-4543-B5E2-8650A8ECA935}.Release|x64.Build.0 = Release|Any CPU
 		{B3F2D802-75A0-4543-B5E2-8650A8ECA935}.Release|x86.ActiveCfg = Release|Any CPU
 		{B3F2D802-75A0-4543-B5E2-8650A8ECA935}.Release|x86.Build.0 = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|x64.Build.0 = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Debug|x86.Build.0 = Debug|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|x64.ActiveCfg = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|x64.Build.0 = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|x86.ActiveCfg = Release|Any CPU
+		{53B0CAD0-5765-4230-822C-C4C9C288BE75}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
