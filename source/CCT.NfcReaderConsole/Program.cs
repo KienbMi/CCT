@@ -27,7 +27,7 @@ namespace ufr_mfp_examples_c_sharp_console
             // ToDo Autostartup 
 
             Functions.reader_open();
-            Functions.usage();
+            //Functions.usage();
 
             do
             {
