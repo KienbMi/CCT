@@ -4,22 +4,32 @@ using CCT.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace ClubAdministration.Persistence
+namespace CCT.Persistence
 {
     public class ApplicationDbContext: DbContext
     {
+        public ApplicationDbContext()
+        {
+        }
+
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Person> Persons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
+            if (!optionsBuilder.IsConfigured)
+            {
+                var builder = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            var configuration = builder.Build();
-            Debug.Write(configuration.ToString());
-            string connectionString = configuration["ConnectionStrings:DefaultConnection"];
-            optionsBuilder.UseSqlServer(connectionString);
-
+                var configuration = builder.Build();
+                Debug.Write(configuration.ToString());
+                string connectionString = configuration["ConnectionStrings:DefaultConnection"];
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
     }
 }
