@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using uFR;
 
@@ -169,6 +170,32 @@ namespace ufr_mfp_examples_c_sharp_console
                 Console.Write("\nPress any key to quit the application...\n");
                 Console.ReadKey();
                 Environment.Exit(0);
+            }
+        }
+
+        public static bool reader_automaticOpen()
+        {
+            status = (UInt32)uFCoder.ReaderOpen();
+
+            if (status == 0)
+            {
+                Console.Write(" --------------------------------------------------\n");
+                Console.Write("        uFR NFC reader successfully opened.\n");
+                Console.Write(" --------------------------------------------------\n");
+
+                const byte OPEN_OK_LIGHT = 0x03,    // alternation
+                           OPEN_OK_SOUND = 0x05;    // melody
+
+                uFCoder.ReaderUISignal(OPEN_OK_LIGHT, OPEN_OK_SOUND);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(" Error while opening device, status is: " + uFCoder.status2str((uFR.DL_STATUS)status));
+
+                int milliseconds = 2000;
+                Thread.Sleep(milliseconds);
+                return false;
             }
         }
 
