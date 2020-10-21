@@ -24,10 +24,8 @@ namespace ufr_mfp_examples_c_sharp_console
 
             //await StartDatabaseTestAsync();
 
-            // ToDo Autostartup 
-
-            Functions.reader_open();
-            //Functions.usage();
+            // Autostartup NFC Reader/Writer
+            while(!Functions.reader_automaticOpen());
 
             do
             {
