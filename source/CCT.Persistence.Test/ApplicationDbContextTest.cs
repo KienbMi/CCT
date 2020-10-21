@@ -173,4 +173,218 @@ namespace CCT.Persistence.Test
             }
         }
     }
+
+    [TestClass]
+    public class UnitOfWorkTests
+    {
+        private ApplicationDbContext GetDbContext(string dbName)
+        {
+            // Build the ApplicationDbContext 
+            //  - with InMemory-DB
+            return new ApplicationDbContext(
+              new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(dbName)
+                .EnableSensitiveDataLogging()
+                .Options);
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetAllPersons_ShouldReturnAllPersons()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using(IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948"
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525"
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548"
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636"
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+            using(IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var persons = await unitOfWOrk.PersonRepository.GetAllPersonAsync();
+                Assert.AreEqual(4, persons.Count());
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetPersonByPhoneNumber_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948"
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525"
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548"
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636"
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var person = await unitOfWOrk.PersonRepository.GetPersonByPhoneNumberAsync("0650/9442548");
+                Assert.AreEqual("Alfred", person.FirstName);
+                Assert.AreEqual("Bauer", person.LastName);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetPersonByDate_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948",
+                    RecordTime = DateTime.Parse("29.10.2020")
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525",
+                    RecordTime = DateTime.Parse("30.10.2020")
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548",
+                    RecordTime = DateTime.Parse("6.11.2020")
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636",
+                    RecordTime = DateTime.Parse("6.11.2020")
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var persons = await unitOfWOrk.PersonRepository.GetPersonsByDateAsync(DateTime.Parse("6.11.2020"));
+                Assert.AreEqual("Alfred", persons.First().FirstName);
+                Assert.AreEqual("Bauer", persons.First().LastName);
+                Assert.AreEqual(2, persons.Count());
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetPersonsForToday_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948",
+                    RecordTime = DateTime.Now
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525",
+                    RecordTime = DateTime.Now
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548",
+                    RecordTime = DateTime.Parse("6.11.2020")
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636",
+                    RecordTime = DateTime.Parse("9.11.2020")
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var persons = await unitOfWOrk.PersonRepository.GetPersonsForTodayAsync();
+                Assert.AreEqual("Anna", persons.First().FirstName);
+                Assert.AreEqual("Nuss", persons.First().LastName);
+                Assert.AreEqual(2, persons.Count());
+            }
+        }
+
+
+    }
 }
