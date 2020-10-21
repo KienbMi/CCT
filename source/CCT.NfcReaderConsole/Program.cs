@@ -16,6 +16,7 @@ namespace ufr_mfp_examples_c_sharp_console
         static async Task<int> Main(string[] args)
         {
             uFR.DL_STATUS dl_status;
+            bool initDone = false;
             bool card_in_field = false;
             byte sak = 0, uid_size = 0, old_sak = 0, old_uid_size = 0;
             byte[] uid = new byte[10];
@@ -34,7 +35,7 @@ namespace ufr_mfp_examples_c_sharp_console
                     dl_status = uFCoder.GetCardIdEx(out sak, uid, out uid_size);
 
                     switch (dl_status)
-                    {
+                    {                        
                         case uFR.DL_STATUS.UFR_OK:
 
                             if (card_in_field)
@@ -64,6 +65,11 @@ namespace ufr_mfp_examples_c_sharp_console
                             dl_status = uFR.DL_STATUS.UFR_OK;
                             break;
 
+                        case uFR.DL_STATUS.UFR_FT_STATUS_ERROR_2:
+                        case uFR.DL_STATUS.UFR_FT_STATUS_ERROR_5:
+                            Functions.reader_automaticOpen();
+                            break;
+                           
                         default:
                             break;
                     }
