@@ -13,5 +13,6 @@ namespace CCT.Core.Contracts
 
         Task DeleteDatabaseAsync();
         Task MigrateDatabaseAsync();
+        bool Exists();
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CCT.NfcReaderConsole.Test
 {
     [TestClass]
-    public class AddPersonTest
+    public class DatabaseTest
     {
         private ApplicationDbContext GetDbContext(string dbName)
         {
@@ -27,7 +27,7 @@ namespace CCT.NfcReaderConsole.Test
         public async Task D01_FirstDataAccessTest()
         {
             string dbName = Guid.NewGuid().ToString();
-            
+
             List<Person> persons = new List<Person>
             {   new Person
                 {
@@ -91,7 +91,7 @@ namespace CCT.NfcReaderConsole.Test
                 foreach (Person person in persons)
                 {
                     await unitOfWork.PersonRepository.AddPersonAsync(person);
-                }               
+                }
                 await unitOfWork.SaveChangesAsync();
             }
             using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
@@ -100,6 +100,22 @@ namespace CCT.NfcReaderConsole.Test
                 Assert.IsNotNull(personsInDb);
                 Assert.AreEqual(2, personsInDb.Length);
             }
+        }
+
+        [TestMethod]
+        public void D03_DatabaseExistsTest()
+        {
+            string dbName = Guid.NewGuid().ToString();
+            bool dbExists;
+
+            //arrange and act
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                dbExists = unitOfWork.Exists();
+            }
+
+            //assert
+            Assert.IsTrue(dbExists);
         }
     }
 }
