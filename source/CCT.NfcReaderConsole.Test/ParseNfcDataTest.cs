@@ -45,7 +45,7 @@ namespace CCT.NfcReaderConsole.Test
         public void T03_ParseNfcString_notOk_missingFirstName()
         {
             //Arrange
-            string expectedFirstName = "Max";
+            //string expectedFirstName = "Max";
             string expectedLastName = "Mustermann";
             string expectedPhoneNumber = "066412345667";
             string nfcDataContent = $"{expectedLastName};{expectedPhoneNumber};";
@@ -62,7 +62,7 @@ namespace CCT.NfcReaderConsole.Test
         {
             //Arrange
             string expectedFirstName = "Max";
-            string expectedLastName = "Mustermann";
+            //string expectedLastName = "Mustermann";
             string expectedPhoneNumber = "066412345667";
             string nfcDataContent = $"{expectedFirstName};{expectedPhoneNumber};";
 
@@ -79,7 +79,7 @@ namespace CCT.NfcReaderConsole.Test
             //Arrange
             string expectedFirstName = "Max";
             string expectedLastName = "Mustermann";
-            string expectedPhoneNumber = "066412345667";
+            //string expectedPhoneNumber = "066412345667";
             string nfcDataContent = $"{expectedFirstName};{expectedLastName};";
 
             //Act

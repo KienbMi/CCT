@@ -22,6 +22,9 @@ namespace CCT.Persistence
         public async Task AddPersonAsync(Person person)
             => await _dbContext.Persons.AddAsync(person);
 
+        public void AddPerson(Person person)
+            => _dbContext.Persons.Add(person);
+
         public async Task<Person[]> GetAllPersonAsync()
             => await _dbContext.Persons
                 .OrderBy(p => p.RecordTime)

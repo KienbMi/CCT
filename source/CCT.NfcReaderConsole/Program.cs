@@ -10,7 +10,7 @@ namespace ufr_mfp_console
 {
     class Program
     {
-        static async Task<int> Main(string[] args)
+        static int Main(string[] args)
         {
             uFR.DL_STATUS dl_status;
             bool card_in_field = false;
@@ -26,7 +26,7 @@ namespace ufr_mfp_console
             try
             {
                 // Check database
-                await FunctionsCCT.CheckDatabaseAsync();
+                FunctionsCCT.CheckDatabase();
 
                 // Start NFC-Reader programm
                 Functions.headline();
@@ -51,7 +51,7 @@ namespace ufr_mfp_console
 
                                     if (person != null)
                                     {
-                                        await FunctionsCCT.AddPersonToDbAsync(person);
+                                        FunctionsCCT.AddPersonToDb(person);
                                         Console.WriteLine(nfcDataContent);
                                         uFCoder.ReaderUISignal(FRES_OK_LIGHT, FRES_OK_SOUND);
                                     }

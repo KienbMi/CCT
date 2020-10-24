@@ -41,16 +41,16 @@ namespace CCT.NfcReaderConsole
             return person;
         }
 
-        public static async Task AddPersonToDbAsync(Person person, ApplicationDbContext dbContext = null)
+        public static void AddPersonToDb(Person person, ApplicationDbContext dbContext = null)
         {
             using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
             {
-                await unitOfWork.PersonRepository.AddPersonAsync(person);
-                await unitOfWork.SaveChangesAsync();
+                unitOfWork.PersonRepository.AddPerson(person);
+                unitOfWork.SaveChanges();
             }
         }
 
-        public static async Task CheckDatabaseAsync(ApplicationDbContext dbContext = null)
+        public static void CheckDatabase(ApplicationDbContext dbContext = null)
         {
             Console.WriteLine("Datenbank Test wird gestartet");
 
@@ -64,7 +64,7 @@ namespace CCT.NfcReaderConsole
                 else
                 {
                     Console.WriteLine("Datenbank migrieren");
-                    await unitOfWork.MigrateDatabaseAsync();
+                    unitOfWork.MigrateDatabase();
                 }
             }
         }

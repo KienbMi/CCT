@@ -38,6 +38,11 @@ namespace CCT.Persistence
             return await _dbContext.SaveChangesAsync();
         }
 
+        public int SaveChanges()
+        {
+            return _dbContext.SaveChanges();
+        }
+
         /// <summary>
         /// Check if database exists
         /// </summary>
@@ -62,5 +67,6 @@ namespace CCT.Persistence
         }
         public async Task DeleteDatabaseAsync() => await _dbContext.Database.EnsureDeletedAsync();
         public async Task MigrateDatabaseAsync() => await _dbContext.Database.MigrateAsync();
+        public void MigrateDatabase() => _dbContext.Database.Migrate();
     }
 }

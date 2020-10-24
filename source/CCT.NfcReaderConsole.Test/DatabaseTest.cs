@@ -136,7 +136,7 @@ namespace CCT.NfcReaderConsole.Test
             };
 
             //Act
-            await FunctionsCCT.AddPersonToDbAsync(person, GetDbContext(dbName));
+            FunctionsCCT.AddPersonToDb(person, GetDbContext(dbName));
 
             //Assert
             using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
