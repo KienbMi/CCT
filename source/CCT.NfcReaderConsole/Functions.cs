@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CCT.Core.Entities;
+using CCT.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using uFR;
 
-namespace ufr_mfp_examples_c_sharp_console
+namespace ufr_mfp_console
 {
     using DL_STATUS = UInt32;
 

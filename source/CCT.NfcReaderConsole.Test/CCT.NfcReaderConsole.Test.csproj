@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CCT.Core\CCT.Core.csproj" />
+    <ProjectReference Include="..\CCT.NfcReaderConsole\CCT.NfcReaderConsole.csproj" />
     <ProjectReference Include="..\CCT.Persistence\CCT.Persistence.csproj" />
   </ItemGroup>
 

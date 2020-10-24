@@ -105,17 +105,51 @@ namespace CCT.NfcReaderConsole.Test
         [TestMethod]
         public void D03_DatabaseExistsTest()
         {
+            //Arrange
             string dbName = Guid.NewGuid().ToString();
             bool dbExists;
 
-            //arrange and act
+            //Act
             using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
             {
                 dbExists = unitOfWork.Exists();
             }
 
-            //assert
+            //Assert
             Assert.IsTrue(dbExists);
+        }
+
+        [TestMethod]
+        public async Task D04_AddPersonTest()
+        {
+            //Arrange
+            string dbName = Guid.NewGuid().ToString();
+            string expectedFirstName = "Max";
+            string expectedLastName = "Mustermann";
+            string expectedPhoneNumber = "066412345667";
+            Person person = new Person
+            {
+                FirstName = expectedFirstName,
+                LastName = expectedLastName,
+                PhoneNumber = expectedPhoneNumber,
+                RecordTime = DateTime.Now
+            };
+
+            //Act
+            await FunctionsCCT.AddPersonToDbAsync(person, GetDbContext(dbName));
+
+            //Assert
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person[] personsInDb = await unitOfWork.PersonRepository.GetAllPersonAsync();
+                Assert.IsNotNull(personsInDb);
+                Assert.AreEqual(1, personsInDb.Length);
+                Assert.AreEqual(expectedFirstName, person.FirstName);
+                Assert.AreEqual(expectedLastName, person.LastName);
+                Assert.AreEqual(expectedPhoneNumber, person.PhoneNumber);
+                Assert.AreEqual(DateTime.Now.Date, person.RecordTime.Date);
+                Assert.AreEqual(DateTime.Now.Hour, person.RecordTime.Hour);
+            }
         }
     }
 }
