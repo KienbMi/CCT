@@ -30,6 +30,7 @@ namespace ufr_mfp_console
 
                 // Start NFC-Reader programm
                 Functions.headline();
+                Functions.reader_automaticOpen();
                 do
                 {
                     while (!Console.KeyAvailable)

@@ -21,54 +21,54 @@ namespace uFR
 
     enum DLOGIC_CARD_TYPE
     {
-         DL_NO_CARD                     = 0x00,
-         DL_MIFARE_ULTRALIGHT			= 0x01,
-         DL_MIFARE_ULTRALIGHT_EV1_11	= 0x02,
-         DL_MIFARE_ULTRALIGHT_EV1_21	= 0x03,
-         DL_MIFARE_ULTRALIGHT_C			= 0x04,
-         DL_NTAG_203					= 0x05,
-         DL_NTAG_210					= 0x06,
-         DL_NTAG_212					= 0x07,
-         DL_NTAG_213					= 0x08,
-         DL_NTAG_215					= 0x09,
-         DL_NTAG_216					= 0x0A,
-         DL_MIKRON_MIK640D				= 0x0B,
-         NFC_T2T_GENERIC				= 0x0C,
-         DL_MIFARE_MINI					= 0x20,
-         DL_MIFARE_CLASSIC_1K		    = 0x21,
-         DL_MIFARE_CLASSIC_4K			= 0x22,
-         DL_MIFARE_PLUS_S_2K_SL0		= 0x23,
-         DL_MIFARE_PLUS_S_4K_SL0		= 0x24,
-         DL_MIFARE_PLUS_X_2K_SL0		= 0x25,
-         DL_MIFARE_PLUS_X_4K_SL0		= 0x26,
-         DL_MIFARE_DESFIRE				= 0x27,
-         DL_MIFARE_DESFIRE_EV1_2K		= 0x28,
-         DL_MIFARE_DESFIRE_EV1_4K		= 0x29,
-         DL_MIFARE_DESFIRE_EV1_8K		= 0x2A,
-         DL_MIFARE_DESFIRE_EV2_2K		= 0x2B,
-         DL_MIFARE_DESFIRE_EV2_4K		= 0x2C,
-         DL_MIFARE_DESFIRE_EV2_8K		= 0x2D,
-         DL_MIFARE_PLUS_S_2K_SL1		= 0x2E,
-         DL_MIFARE_PLUS_X_2K_SL1		= 0x2F,
-         DL_MIFARE_PLUS_EV1_2K_SL1      = 0x30,
-         DL_MIFARE_PLUS_X_2K_SL2		= 0x31,
-         DL_MIFARE_PLUS_S_2K_SL3		= 0x32,
-         DL_MIFARE_PLUS_X_2K_SL3		= 0x33,
-         DL_MIFARE_PLUS_EV1_2K_SL3      = 0x34,
-         DL_MIFARE_PLUS_S_4K_SL1		= 0x35,
-         DL_MIFARE_PLUS_X_4K_SL1		= 0x36,
-         DL_MIFARE_PLUS_EV1_4K_SL1      = 0x37,
-         DL_MIFARE_PLUS_X_4K_SL2		= 0x38,
-         DL_MIFARE_PLUS_S_4K_SL3		= 0x39,
-         DL_MIFARE_PLUS_X_4K_SL3		= 0x3A,
-         DL_MIFARE_PLUS_EV1_4K_SL3      = 0x3B,
-         DL_UNKNOWN_ISO_14443_4			= 0x40,
-         DL_GENERIC_ISO14443_4			= 0x40,
-         DL_GENERIC_ISO14443_4_TYPE_B	= 0x41,
-         DL_GENERIC_ISO14443_3_TYPE_B	= 0x42,
-         DL_IMEI_UID					= 0x80
+        DL_NO_CARD = 0x00,
+        DL_MIFARE_ULTRALIGHT = 0x01,
+        DL_MIFARE_ULTRALIGHT_EV1_11 = 0x02,
+        DL_MIFARE_ULTRALIGHT_EV1_21 = 0x03,
+        DL_MIFARE_ULTRALIGHT_C = 0x04,
+        DL_NTAG_203 = 0x05,
+        DL_NTAG_210 = 0x06,
+        DL_NTAG_212 = 0x07,
+        DL_NTAG_213 = 0x08,
+        DL_NTAG_215 = 0x09,
+        DL_NTAG_216 = 0x0A,
+        DL_MIKRON_MIK640D = 0x0B,
+        NFC_T2T_GENERIC = 0x0C,
+        DL_MIFARE_MINI = 0x20,
+        DL_MIFARE_CLASSIC_1K = 0x21,
+        DL_MIFARE_CLASSIC_4K = 0x22,
+        DL_MIFARE_PLUS_S_2K_SL0 = 0x23,
+        DL_MIFARE_PLUS_S_4K_SL0 = 0x24,
+        DL_MIFARE_PLUS_X_2K_SL0 = 0x25,
+        DL_MIFARE_PLUS_X_4K_SL0 = 0x26,
+        DL_MIFARE_DESFIRE = 0x27,
+        DL_MIFARE_DESFIRE_EV1_2K = 0x28,
+        DL_MIFARE_DESFIRE_EV1_4K = 0x29,
+        DL_MIFARE_DESFIRE_EV1_8K = 0x2A,
+        DL_MIFARE_DESFIRE_EV2_2K = 0x2B,
+        DL_MIFARE_DESFIRE_EV2_4K = 0x2C,
+        DL_MIFARE_DESFIRE_EV2_8K = 0x2D,
+        DL_MIFARE_PLUS_S_2K_SL1 = 0x2E,
+        DL_MIFARE_PLUS_X_2K_SL1 = 0x2F,
+        DL_MIFARE_PLUS_EV1_2K_SL1 = 0x30,
+        DL_MIFARE_PLUS_X_2K_SL2 = 0x31,
+        DL_MIFARE_PLUS_S_2K_SL3 = 0x32,
+        DL_MIFARE_PLUS_X_2K_SL3 = 0x33,
+        DL_MIFARE_PLUS_EV1_2K_SL3 = 0x34,
+        DL_MIFARE_PLUS_S_4K_SL1 = 0x35,
+        DL_MIFARE_PLUS_X_4K_SL1 = 0x36,
+        DL_MIFARE_PLUS_EV1_4K_SL1 = 0x37,
+        DL_MIFARE_PLUS_X_4K_SL2 = 0x38,
+        DL_MIFARE_PLUS_S_4K_SL3 = 0x39,
+        DL_MIFARE_PLUS_X_4K_SL3 = 0x3A,
+        DL_MIFARE_PLUS_EV1_4K_SL3 = 0x3B,
+        DL_UNKNOWN_ISO_14443_4 = 0x40,
+        DL_GENERIC_ISO14443_4 = 0x40,
+        DL_GENERIC_ISO14443_4_TYPE_B = 0x41,
+        DL_GENERIC_ISO14443_3_TYPE_B = 0x42,
+        DL_IMEI_UID = 0x80
 
-}
+    }
     // MIFARE CLASSIC Authentication Modes:
     enum MIFARE_AUTHENTICATION
     {
@@ -191,20 +191,20 @@ namespace uFR
         UFR_NDEF_UNSUPPORTED_CARD_TYPE = 0x82,
         UFR_NDEF_CARD_FORMAT_ERROR = 0x83,
         UFR_MAD_NOT_ENABLED = 0x84,
-        UFR_MAD_VERSION_NOT_SUPPORTED = 0x85,       
-    
+        UFR_MAD_VERSION_NOT_SUPPORTED = 0x85,
 
-    	// multiple units - return from the functions with ReaderList_ prefix in name
-    	UFR_DEVICE_WRONG_HANDLE = 0x100,
-    	UFR_DEVICE_INDEX_OUT_OF_BOUND,
-    	UFR_DEVICE_ALREADY_OPENED,
-    	UFR_DEVICE_ALREADY_CLOSED,
-    	UFR_DEVICE_IS_NOT_CONNECTED,
-    
-    	// Originality Check Error Codes:
-    	UFR_NOT_NXP_GENUINE = 0x200,
-    	UFR_OPEN_SSL_DYNAMIC_LIB_FAILED,
-    	UFR_OPEN_SSL_DYNAMIC_LIB_NOT_FOUND,
+
+        // multiple units - return from the functions with ReaderList_ prefix in name
+        UFR_DEVICE_WRONG_HANDLE = 0x100,
+        UFR_DEVICE_INDEX_OUT_OF_BOUND,
+        UFR_DEVICE_ALREADY_OPENED,
+        UFR_DEVICE_ALREADY_CLOSED,
+        UFR_DEVICE_IS_NOT_CONNECTED,
+
+        // Originality Check Error Codes:
+        UFR_NOT_NXP_GENUINE = 0x200,
+        UFR_OPEN_SSL_DYNAMIC_LIB_FAILED,
+        UFR_OPEN_SSL_DYNAMIC_LIB_NOT_FOUND,
 
         UFR_NOT_IMPLEMENTED = 0x1000,
         UFR_COMMAND_FAILED,
@@ -317,9 +317,17 @@ namespace uFR
         const string DLL_PATH = ""; //@"..\..\..\ufr-lib\windows\x86_64\";
         const string NAME_DLL = "uFCoder-x86_64.dll";
 
-#else
+#elif WIN32
         const string DLL_PATH = "";//; @"..\..\ufr-lib\windows\x86\";
         const string NAME_DLL = "uFCoder-x86.dll";
+
+#elif ARM32 
+        const string DLL_PATH = "";
+        const string NAME_DLL = "libuFCoder-armhf.so";
+
+#else
+        const string DLL_PATH = "";
+        const string NAME_DLL = "uFCoder-aarch64.so";
 #endif
         const string DLL_NAME = DLL_PATH + NAME_DLL;
 
@@ -335,11 +343,19 @@ namespace uFR
 
 
 #if WIN64
-            string DllPath = @"lib\windows\x86_64"; // for x64 target
-            string name = "uFCoder-x86_64.dll";
+        string DllPath = @"lib\windows\x86_64"; // for x64 target
+        string name = "uFCoder-x86_64.dll";
+
+#elif WIN32
+        string DllPath = "";//; @"..\..\ufr-lib\windows\x86\";
+        string name = "uFCoder-x86.dll";
+
+#elif ARM32
+        string DllPath = "";
+        string name = "libuFCoder-armhf.so";
 #else
-            string DllPath = @"lib\windows\x86"; // for x86 target
-            string name = "uFCoder-x86.dll";
+        string DllPath = "";
+        string name = "uFCoder-aarch64.so";
 #endif
             string dll_name = DllPath + name;
             int repeat_cnt = 0;
@@ -2080,8 +2096,8 @@ namespace uFR
         //---------------------------------------------------------------------
         [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall, EntryPoint = "MFP_ChangeVcPollingMacKey")]
         public static extern DL_STATUS MFP_ChangeVcPollingMacKey(byte configuration_key_index, [In] byte[] new_key);
-        
+
 
     }
-    
+
 }
