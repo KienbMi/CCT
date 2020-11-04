@@ -293,28 +293,28 @@ namespace CCT.Persistence.Test
                     FirstName = "Anna",
                     LastName = "Nuss",
                     PhoneNumber = "0664/9032948",
-                    RecordTime = DateTime.Parse("29.10.2020")
+                    RecordTime = DateTime.Parse("2020-10-29")
                 };
                 Person person2 = new Person
                 {
                     FirstName = "Hans",
                     LastName = "Gruber",
                     PhoneNumber = "0664/4255525",
-                    RecordTime = DateTime.Parse("30.10.2020")
+                    RecordTime = DateTime.Parse("2020-10-30")
                 };
                 Person person3 = new Person
                 {
                     FirstName = "Alfred",
                     LastName = "Bauer",
                     PhoneNumber = "0650/9442548",
-                    RecordTime = DateTime.Parse("6.11.2020")
+                    RecordTime = DateTime.Parse("2020-11-06")
                 };
                 Person person4 = new Person
                 {
                     FirstName = "Hannes",
                     LastName = "Ullisch",
                     PhoneNumber = "0680/1145636",
-                    RecordTime = DateTime.Parse("6.11.2020")
+                    RecordTime = DateTime.Parse("2020-11-06")
                 };
 
                 await unitOfWork.PersonRepository.AddPersonAsync(person1);
@@ -326,7 +326,7 @@ namespace CCT.Persistence.Test
 
             using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
             {
-                var persons = await unitOfWOrk.PersonRepository.GetPersonsByDateAsync(DateTime.Parse("6.11.2020"));
+                var persons = await unitOfWOrk.PersonRepository.GetPersonsByDateAsync(DateTime.Parse("2020-11-06"));
                 Assert.AreEqual("Alfred", persons.First().FirstName);
                 Assert.AreEqual("Bauer", persons.First().LastName);
                 Assert.AreEqual(2, persons.Count());
@@ -359,14 +359,14 @@ namespace CCT.Persistence.Test
                     FirstName = "Alfred",
                     LastName = "Bauer",
                     PhoneNumber = "0650/9442548",
-                    RecordTime = DateTime.Parse("6.11.2020")
+                    RecordTime = DateTime.Parse("2020-11-06")
                 };
                 Person person4 = new Person
                 {
                     FirstName = "Hannes",
                     LastName = "Ullisch",
                     PhoneNumber = "0680/1145636",
-                    RecordTime = DateTime.Parse("9.11.2020")
+                    RecordTime = DateTime.Parse("2020-11-09")
                 };
 
                 await unitOfWork.PersonRepository.AddPersonAsync(person1);

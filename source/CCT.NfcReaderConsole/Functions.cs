@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CCT.Core.Entities;
+using CCT.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +8,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using uFR;
 
-namespace ufr_mfp_examples_c_sharp_console
+namespace ufr_mfp_console
 {
     using DL_STATUS = UInt32;
 
     class Functions
     {
         static DL_STATUS status;
+
+        public static void headline()
+        {
+            Console.Write(" +------------------------------------------------+\n");
+            Console.Write(" |         uFR_MFP_console_program                |\n");
+            Console.Write(" |              MIFARE PLUS                       |\n");
+            Console.Write(" |              version 1.0                       |\n");
+            Console.Write(" +------------------------------------------------+\n");
+            Console.Write("                              For exit, hit escape.\n");
+            Console.Write(" --------------------------------------------------\n");
+        }
 
         public static void usage()
         {
@@ -197,6 +210,30 @@ namespace ufr_mfp_examples_c_sharp_console
                 Thread.Sleep(milliseconds);
                 return false;
             }
+        }
+
+        public static (uFR.DL_STATUS,string) ReadLinear()
+        {
+            //authenticate
+            const byte MIFARE_AUTHENT1A = 0x60;
+
+            //parameter
+            ushort ushLinearAddress = 0;
+            ushort ushDataLength = 100;
+            byte[] baReadData = new byte[ushDataLength];
+            ushort ushBytesRet = 0;
+            byte bAuthMode = MIFARE_AUTHENT1A;
+            byte bKeyIndex = 0;
+
+            var dL_STATUS = uFCoder.LinearRead(baReadData, ushLinearAddress, ushDataLength, out ushBytesRet, bAuthMode, bKeyIndex);
+            string nfcDataContent = string.Empty;
+
+            if (dL_STATUS == uFR.DL_STATUS.UFR_OK)
+            {
+                nfcDataContent = System.Text.Encoding.Default.GetString(baReadData);
+            }
+
+            return (dL_STATUS, nfcDataContent);
         }
 
         public static void Card_Personalization()

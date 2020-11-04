@@ -9,6 +9,7 @@ namespace CCT.Core.Contracts
     public interface IPersonRepository
     {
         Task AddPersonAsync(Person person);
+        void AddPerson(Person person);
 
         Task<Person[]> GetAllPersonAsync();
 

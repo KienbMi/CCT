@@ -1,6 +1,8 @@
 ﻿using CCT.Core.Contracts;
 using CCT.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,6 +38,17 @@ namespace CCT.Persistence
             return await _dbContext.SaveChangesAsync();
         }
 
+        public int SaveChanges()
+        {
+            return _dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Check if database exists
+        /// </summary>
+        /// <returns></returns>
+        public bool Exists() => _dbContext.Database.CanConnect();
+
         public void Dispose()
         {
             Dispose(true);
@@ -54,5 +67,6 @@ namespace CCT.Persistence
         }
         public async Task DeleteDatabaseAsync() => await _dbContext.Database.EnsureDeletedAsync();
         public async Task MigrateDatabaseAsync() => await _dbContext.Database.MigrateAsync();
+        public void MigrateDatabase() => _dbContext.Database.Migrate();
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CCT.NfcReaderConsole.Test
 {
     [TestClass]
-    public class AddPersonTest
+    public class DatabaseTest
     {
         private ApplicationDbContext GetDbContext(string dbName)
         {
@@ -27,7 +27,7 @@ namespace CCT.NfcReaderConsole.Test
         public async Task D01_FirstDataAccessTest()
         {
             string dbName = Guid.NewGuid().ToString();
-            
+
             List<Person> persons = new List<Person>
             {   new Person
                 {
@@ -91,7 +91,7 @@ namespace CCT.NfcReaderConsole.Test
                 foreach (Person person in persons)
                 {
                     await unitOfWork.PersonRepository.AddPersonAsync(person);
-                }               
+                }
                 await unitOfWork.SaveChangesAsync();
             }
             using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
@@ -99,6 +99,56 @@ namespace CCT.NfcReaderConsole.Test
                 Person[] personsInDb = await unitOfWork.PersonRepository.GetAllPersonAsync();
                 Assert.IsNotNull(personsInDb);
                 Assert.AreEqual(2, personsInDb.Length);
+            }
+        }
+
+        [TestMethod]
+        public void D03_DatabaseExistsTest()
+        {
+            //Arrange
+            string dbName = Guid.NewGuid().ToString();
+            bool dbExists;
+
+            //Act
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                dbExists = unitOfWork.Exists();
+            }
+
+            //Assert
+            Assert.IsTrue(dbExists);
+        }
+
+        [TestMethod]
+        public async Task D04_AddPersonTest()
+        {
+            //Arrange
+            string dbName = Guid.NewGuid().ToString();
+            string expectedFirstName = "Max";
+            string expectedLastName = "Mustermann";
+            string expectedPhoneNumber = "066412345667";
+            Person person = new Person
+            {
+                FirstName = expectedFirstName,
+                LastName = expectedLastName,
+                PhoneNumber = expectedPhoneNumber,
+                RecordTime = DateTime.Now
+            };
+
+            //Act
+            FunctionsCCT.AddPersonToDb(person, GetDbContext(dbName));
+
+            //Assert
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person[] personsInDb = await unitOfWork.PersonRepository.GetAllPersonAsync();
+                Assert.IsNotNull(personsInDb);
+                Assert.AreEqual(1, personsInDb.Length);
+                Assert.AreEqual(expectedFirstName, person.FirstName);
+                Assert.AreEqual(expectedLastName, person.LastName);
+                Assert.AreEqual(expectedPhoneNumber, person.PhoneNumber);
+                Assert.AreEqual(DateTime.Now.Date, person.RecordTime.Date);
+                Assert.AreEqual(DateTime.Now.Hour, person.RecordTime.Hour);
             }
         }
     }

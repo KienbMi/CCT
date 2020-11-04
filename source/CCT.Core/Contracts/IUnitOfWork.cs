@@ -10,8 +10,11 @@ namespace CCT.Core.Contracts
         IPersonRepository PersonRepository { get; }
 
         Task<int> SaveChangesAsync();
+        int SaveChanges();
 
         Task DeleteDatabaseAsync();
         Task MigrateDatabaseAsync();
+        void MigrateDatabase();
+        bool Exists();
     }
 }
