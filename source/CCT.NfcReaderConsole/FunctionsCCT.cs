@@ -41,13 +41,14 @@ namespace CCT.NfcReaderConsole
             return person;
         }
 
-        public static void AddPersonToDb(Person person, ApplicationDbContext dbContext = null)
+        public static bool AddPersonToDb(Person person, ApplicationDbContext dbContext = null)
         {
             using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
             {
                 unitOfWork.PersonRepository.AddPerson(person);
                 unitOfWork.SaveChanges();
             }
+            return true;
         }
 
         public static void CheckDatabase(ApplicationDbContext dbContext = null)
