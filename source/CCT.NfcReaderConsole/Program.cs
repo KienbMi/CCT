@@ -26,14 +26,14 @@ namespace ufr_mfp_console
             try
             {
                 // Check database
-                FunctionsCCT.CheckDatabase();
+                //FunctionsCCT.CheckDatabase();
 
                 // Start NFC-Reader programm
                 Functions.headline();
                 Functions.reader_automaticOpen();
                 do
                 {
-                    while (!Console.KeyAvailable)
+                    while ((!Console.IsInputRedirected)? !Console.KeyAvailable : true)
                     {
                         (dl_status, nfcDataContent) = Functions.ReadLinear();
 
@@ -52,9 +52,21 @@ namespace ufr_mfp_console
 
                                     if (person != null)
                                     {
-                                        FunctionsCCT.AddPersonToDb(person);
+                                        bool dbSaveOk = false;
+                                        try
+                                        {
+                                            dbSaveOk = FunctionsCCT.AddPersonToDb(person);
+                                        }
+                                        catch(Exception ex)
+                                        {
+                                            Console.WriteLine("Could not write to database");
+                                            uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                                        }
                                         Console.WriteLine(nfcDataContent);
-                                        uFCoder.ReaderUISignal(FRES_OK_LIGHT, FRES_OK_SOUND);
+                                        if (dbSaveOk)
+                                        {
+                                            uFCoder.ReaderUISignal(FRES_OK_LIGHT, FRES_OK_SOUND);
+                                        }
                                     }
                                     else
                                     {
