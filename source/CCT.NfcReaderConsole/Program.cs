@@ -61,6 +61,7 @@ namespace ufr_mfp_console
                                         {
                                             Console.WriteLine("Could not write to database");
                                             uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                                            WriteExceptions(ex);
                                         }
                                         Console.WriteLine(nfcDataContent);
                                         if (dbSaveOk)
@@ -95,15 +96,19 @@ namespace ufr_mfp_console
             {
                 Console.WriteLine($"Unexpected error occured:");
                 Console.WriteLine($"{ex.Message}");
-
-                Exception run = ex.InnerException;
-                while (run != null)
-                {
-                    Console.WriteLine($"{ex.Message}");
-                    run = run.InnerException;
-                }
+                WriteExceptions(ex);
             }
             return 0;
+        }
+
+        static void WriteExceptions(Exception ex)
+        {
+            Exception run = ex.InnerException;
+            while (run != null)
+            {
+                Console.WriteLine($"{ex.Message}");
+                run = run.InnerException;
+            }
         }
     }
 }
