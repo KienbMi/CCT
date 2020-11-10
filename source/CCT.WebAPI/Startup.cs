@@ -48,7 +48,7 @@ namespace CCT.WebAPI
                     }
                 });
 
-                var xmlFile = "CCT.WebAPI.xml";
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
