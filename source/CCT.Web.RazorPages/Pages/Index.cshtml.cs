@@ -19,7 +19,7 @@ namespace CCT.Web.RazorPages.Pages
 
         public void OnGet()
         {
-
+            
         }
     }
 }
