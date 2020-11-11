@@ -27,8 +27,19 @@ namespace CCT.Persistence
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 var configuration = builder.Build();
                 Debug.Write(configuration.ToString());
-                string connectionString = configuration["ConnectionStrings:DefaultConnection"];
-                optionsBuilder.UseSqlServer(connectionString);
+
+                string actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                if (actEnvironment == "RPI2")
+                {
+                    string connectionString = configuration["ConnectionStrings:SqliteConnection"];
+                    optionsBuilder.UseSqlite(connectionString);
+                }
+                else
+                {
+                    string connectionString = configuration["ConnectionStrings:DefaultConnection"];
+                    optionsBuilder.UseSqlServer(connectionString);
+                }
             }
         }
     }

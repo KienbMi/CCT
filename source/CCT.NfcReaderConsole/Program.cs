@@ -26,7 +26,7 @@ namespace ufr_mfp_console
             try
             {
                 // Check database
-                //FunctionsCCT.CheckDatabase();
+                FunctionsCCT.CheckDatabase();
 
                 // Start NFC-Reader programm
                 Functions.headline();
@@ -95,7 +95,6 @@ namespace ufr_mfp_console
             catch (System.FormatException ex)
             {
                 Console.WriteLine($"Unexpected error occured:");
-                Console.WriteLine($"{ex.Message}");
                 WriteExceptions(ex);
             }
             return 0;
@@ -103,10 +102,11 @@ namespace ufr_mfp_console
 
         static void WriteExceptions(Exception ex)
         {
+            Console.WriteLine($"{ex.Message}");
             Exception run = ex.InnerException;
             while (run != null)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine($"{run.Message}");
                 run = run.InnerException;
             }
         }
