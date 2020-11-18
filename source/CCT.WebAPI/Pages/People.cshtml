@@ -1,0 +1,51 @@
+﻿@page
+@model CCT.WebAPI.Pages.PeopleModel
+
+
+<h2>@ViewData["Message"]</h2>
+
+<form method="post">
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeopleOverview[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeopleOverview[0].LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeopleOverview[0].PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeopleOverview[0].RecordTime)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.PeopleOverview)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(_ => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.RecordTime)
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</form>
