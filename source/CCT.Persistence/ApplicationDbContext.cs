@@ -35,6 +35,11 @@ namespace CCT.Persistence
                     string connectionString = configuration["ConnectionStrings:SqliteConnection"];
                     optionsBuilder.UseSqlite(connectionString);
                 }
+                else if (actEnvironment == "RPI4")
+                {
+                    string connectionString = configuration["ConnectionStrings:SqliteConnection_RPI4"];
+                    optionsBuilder.UseSqlite(connectionString);
+                }
                 else
                 {
                     string connectionString = configuration["ConnectionStrings:DefaultConnection"];
