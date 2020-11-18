@@ -14,7 +14,7 @@ namespace CCT.WebAPI.Pages
 {
     public class PersonsModel : PageModel
     {
-        private Client _personClient;
+        private PersonsClient _personClient;
         public Person[] PersonsOverview { get; set; }
 
         public PersonsModel()
@@ -24,7 +24,7 @@ namespace CCT.WebAPI.Pages
 
         public async Task OnGetAsync()
         {
-            
+            PersonsOverview = await _personClient.GetAllPersonsAsync();
         }
     }
 }

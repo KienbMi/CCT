@@ -29,7 +29,7 @@ namespace CCT.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetAllPersons()
+        public async Task<ActionResult<Person[]>> GetAllPersons()
         {
             var personsInDb = await _unitOfWork.PersonRepository.GetAllPersonAsync();
 

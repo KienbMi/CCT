@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{27225938-2EBF-4BFC-B5A7-54927410BC12}"
 	ProjectSection(SolutionItems) = preProject
 		cct.nswag = cct.nswag
+		generate-stub.ps1 = generate-stub.ps1
 	EndProjectSection
 EndProject
 Global
