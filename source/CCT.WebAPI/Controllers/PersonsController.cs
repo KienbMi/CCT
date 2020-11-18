@@ -22,7 +22,6 @@ namespace CCT.WebAPI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
         /// <summary>
         /// Returns all data from people stored in db
         /// </summary>

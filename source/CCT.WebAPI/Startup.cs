@@ -36,18 +36,23 @@ namespace CCT.WebAPI
 
             services.AddScoped<IUnitOfWork>(x => new UnitOfWork());
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerDocument(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.PostProcess = document =>
                 {
-                    Version = "v1",
-                    Title = "CCT",
-                    Contact = new OpenApiContact()
+                    document.Info.Version = "v1";
+                    document.Info.Title = "CCT";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.OpenApiContact()
                     {
                         Name = "Michael Kienberger",
                         Email = "m_kienberger@gmx.net"
-                    }
-                });
+                    };
+                    document.Info.License = new NSwag.OpenApiLicense()
+                    {
+                        Name = "Trademark"
+                    };
+                };
 
             });
         }
@@ -62,12 +67,13 @@ namespace CCT.WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseSwagger();
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
             
-            app.UseSwaggerUI(c => 
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CCT API");
-            });
+            //app.UseSwaggerUI(c => 
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CCT API");
+            //});
 
             app.UseRouting();
 
