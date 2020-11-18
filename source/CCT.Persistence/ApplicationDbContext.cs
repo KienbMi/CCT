@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CCT.Persistence
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext()
         {
