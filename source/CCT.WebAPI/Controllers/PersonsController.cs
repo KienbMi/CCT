@@ -50,7 +50,7 @@ namespace CCT.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("phone/{phoneNumber}")]
-        public async Task<ActionResult> GetPersonByPhoneNumber(string phoneNumber)
+        public async Task<ActionResult<Person>> GetPersonByPhoneNumber(string phoneNumber)
         {
             var person = await _unitOfWork.PersonRepository.GetPersonByPhoneNumberAsync(phoneNumber);
 
@@ -82,7 +82,7 @@ namespace CCT.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("date/{date}")]
-        public async Task<ActionResult> GetPersonsByDate(DateTime date)
+        public async Task<ActionResult<Person[]>> GetPersonsByDate(DateTime date)
         {
             var persons = await _unitOfWork.PersonRepository.GetPersonsByDateAsync(date);
 
@@ -102,7 +102,7 @@ namespace CCT.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("today")]
-        public async Task<ActionResult> GetPersonsForToday()
+        public async Task<ActionResult<Person[]>> GetPersonsForToday()
         {
             var persons = await _unitOfWork.PersonRepository.GetPersonsForTodayAsync();
 

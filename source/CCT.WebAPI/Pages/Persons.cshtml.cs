@@ -24,7 +24,7 @@ namespace CCT.WebAPI.Pages
 
         public async Task OnGetAsync()
         {
-            PersonsOverview = await _personClient.GetAllPersonsAsync();
+            
         }
     }
 }
