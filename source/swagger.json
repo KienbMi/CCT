@@ -1,0 +1,266 @@
+{
+  "x-generator": "NSwag v13.9.3.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "CCT",
+    "termsOfService": "None",
+    "contact": {
+      "name": "Michael Kienberger",
+      "email": "m_kienberger@gmx.net"
+    },
+    "license": {
+      "name": "Trademark"
+    },
+    "version": "v1"
+  },
+  "host": "zoniko.zapto.org",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "text/plain",
+    "application/json",
+    "text/json"
+  ],
+  "paths": {
+    "/api/Persons": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "operationId": "Persons_GetAllPersons",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Person"
+              }
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Persons"
+        ],
+        "operationId": "Persons_PostPerson",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "personDto",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PersonDto"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Persons/phone/{phoneNumber}": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "operationId": "Persons_GetPersonByPhoneNumber",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "phoneNumber",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Persons/date/{date}": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "operationId": "Persons_GetPersonsByDate",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "format": "date-time",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Persons/today": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "operationId": "Persons_GetPersonsForToday",
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Person": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/EntityObject"
+        },
+        {
+          "type": "object",
+          "required": [
+            "recordTime"
+          ],
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "lastName": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "phoneNumber": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "recordTime": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      ]
+    },
+    "EntityObject": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rowVersion": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "ProblemDetails": {
+      "type": "object",
+      "additionalProperties": {},
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      }
+    },
+    "PersonDto": {
+      "type": "object",
+      "required": [
+        "recordTime"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "lastName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "recordTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

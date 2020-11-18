@@ -69,11 +69,6 @@ namespace CCT.WebAPI
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
-            
-            //app.UseSwaggerUI(c => 
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CCT API");
-            //});
 
             app.UseRouting();
 
