@@ -28,7 +28,7 @@ namespace CCT.WebAPI.Pages
         {
             ViewData["Message"] = "Personal Data";
 
-            await PrepareDb();
+            //await PrepareDb();
             PeopleOverview = await _pc.GetAllPersonsAsync();
         }
 
