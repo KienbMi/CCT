@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CCT.Persistence.Migrations
+namespace CCT.Persistence.Migrations.SqliteMigrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201110233422_SqliteMigration")]
-    partial class SqliteMigration
+    [DbContext(typeof(SqliteContext))]
+    [Migration("20201120201926_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

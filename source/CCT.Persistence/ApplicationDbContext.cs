@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace CCT.Persistence
 {
+    /// <summary>
+    /// localDb context
+    /// example for package manager console: add-migration InitialMigration -Context ApplicationDbContext
+    /// </summary>
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext()
@@ -28,23 +32,8 @@ namespace CCT.Persistence
                 var configuration = builder.Build();
                 Debug.Write(configuration.ToString());
 
-                string actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-                if (actEnvironment == "RPI2")
-                {
-                    string connectionString = configuration["ConnectionStrings:SqliteConnection"];
-                    optionsBuilder.UseSqlite(connectionString);
-                }
-                else if (actEnvironment == "RPI4")
-                {
-                    string connectionString = configuration["ConnectionStrings:SqliteConnection_RPI4"];
-                    optionsBuilder.UseSqlite(connectionString);
-                }
-                else
-                {
-                    string connectionString = configuration["ConnectionStrings:DefaultConnection"];
-                    optionsBuilder.UseSqlServer(connectionString);
-                }
+                string connectionString = configuration["ConnectionStrings:DefaultConnection"];
+                optionsBuilder.UseSqlServer(connectionString);               
             }
         }
     }
