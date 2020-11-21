@@ -36,12 +36,12 @@ namespace CCT.Persistence
                 if (_environmentInfo == "RPI2")
                 {
                     string connectionString = configuration["ConnectionStrings:SqliteConnection"];
-                    optionsBuilder.UseSqlite(connectionString, _ => _.MigrationsAssembly("SqlServerMigrations"));
+                    optionsBuilder.UseSqlite(connectionString);
                 }
                 else
                 {
                     string connectionString = configuration["ConnectionStrings:SqliteConnection_RPI4"];
-                    optionsBuilder.UseSqlite(connectionString, _ => _.MigrationsAssembly("SqlServerMigrations"));
+                    optionsBuilder.UseSqlite(connectionString);
                 }
             }
         }
