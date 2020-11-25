@@ -17,7 +17,16 @@ namespace CCT.Persistence
 
         public UnitOfWork()
         {
-            _dbContext = new ApplicationDbContext();
+            string actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (actEnvironment != null && actEnvironment.StartsWith("RPI"))
+            {
+                _dbContext = new SqliteContext(actEnvironment);
+            }
+            else
+            {
+                _dbContext = new ApplicationDbContext();
+            }
             PersonRepository = new PersonRepository(_dbContext);
         }
 
