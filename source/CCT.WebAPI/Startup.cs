@@ -65,6 +65,7 @@ namespace CCT.WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseOpenApi();
