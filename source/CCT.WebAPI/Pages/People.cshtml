@@ -11,16 +11,16 @@
         <thead>
             <tr>
                 <th>
-                    Firstname
+                    @Html.DisplayNameFor(model => model.PeopleOverview.FirstOrDefault().FirstName)
                 </th>
                 <th>
-                    Lastname
+                    @Html.DisplayNameFor(model => model.PeopleOverview.FirstOrDefault().LastName)
                 </th>
                 <th>
-                    Phonenumber
+                    @Html.DisplayNameFor(model => model.PeopleOverview.FirstOrDefault().PhoneNumber)
                 </th>
                 <th>
-                    Record Time
+                    @Html.DisplayNameFor(model => model.PeopleOverview.FirstOrDefault().RecordTime)
                 </th>
             </tr>
         </thead>
