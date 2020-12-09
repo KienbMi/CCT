@@ -95,7 +95,7 @@ namespace ufr_mfp_console
                         Thread.Sleep(milliseconds);
 
                         // Delete persons older then storage time (default 30 days) from database
-                        if (DateTime.Now.Date != _dateOld)
+                        if (DateTime.Now.Date != _dateOld.Date)
                         {
                             await FunctionsCCT.DeletePersonsOlderThenInDbAsync(storageTimeInDays);
                         }
