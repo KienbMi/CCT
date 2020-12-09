@@ -51,6 +51,16 @@ namespace CCT.NfcReaderConsole
             return true;
         }
 
+        public static async Task DeletePersonsOlderThenInDbAsync(int days, ApplicationDbContext dbContext = null)
+        {
+            using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
+            {
+                var personsToDelete = await unitOfWork.PersonRepository.GetPersonsOlderThenAsync(days);
+                unitOfWork.PersonRepository.DeletePersons(personsToDelete);
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public static void CheckDatabase(ApplicationDbContext dbContext = null)
         {
             Console.WriteLine("Datenbank Test wird gestartet");

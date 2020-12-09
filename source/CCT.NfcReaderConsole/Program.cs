@@ -10,8 +10,11 @@ namespace ufr_mfp_console
 {
     class Program
     {
-        static int Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
+            DateTime _dateOld;
+            int storageTimeInDays = 30;
+            
             uFR.DL_STATUS dl_status;
             bool card_in_field = false;
             string nfcDataContent = string.Empty;
@@ -27,6 +30,10 @@ namespace ufr_mfp_console
             {
                 // Check database
                 FunctionsCCT.CheckDatabase();
+
+                // Delete persons older then storage time (default 30 days) from database
+                await FunctionsCCT.DeletePersonsOlderThenInDbAsync(storageTimeInDays);
+                _dateOld = DateTime.Now;
 
                 // Start NFC-Reader programm
                 Functions.headline();
@@ -86,6 +93,13 @@ namespace ufr_mfp_console
 
                         int milliseconds = 300;
                         Thread.Sleep(milliseconds);
+
+                        // Delete persons older then storage time (default 30 days) from database
+                        if (DateTime.Now.Date != _dateOld)
+                        {
+                            await FunctionsCCT.DeletePersonsOlderThenInDbAsync(storageTimeInDays);
+                        }
+                        _dateOld = DateTime.Now;
                     }
 
                     c = Console.ReadKey(true).KeyChar;
