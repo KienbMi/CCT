@@ -25,6 +25,9 @@ namespace CCT.Persistence
         public void AddPerson(Person person)
             => _dbContext.Persons.Add(person);
 
+        public void DeletePersons(IEnumerable<Person> persons)
+            => _dbContext.Persons.RemoveRange(persons);
+
         public async Task<Person[]> GetAllPersonAsync()
             => await _dbContext.Persons
                 .OrderBy(p => p.RecordTime)
@@ -42,6 +45,11 @@ namespace CCT.Persistence
         public async Task<Person[]> GetPersonsForTodayAsync()
             => await _dbContext.Persons
                 .Where(p => p.RecordTime.Date == DateTime.Today.Date)
+                .ToArrayAsync();
+
+        public async Task<Person[]> GetPersonsOlderThenAsync(int days)
+            => await _dbContext.Persons
+                .Where(p => p.RecordTime.AddDays(days + 1) <= DateTime.Now)
                 .ToArrayAsync();
     }
 }

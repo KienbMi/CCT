@@ -385,6 +385,113 @@ namespace CCT.Persistence.Test
             }
         }
 
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetPersonsOlderThen_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
 
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948",
+                    RecordTime = DateTime.Now
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525",
+                    RecordTime = DateTime.Now
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548",
+                    RecordTime = DateTime.Now.Subtract(TimeSpan.FromDays(30))
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636",
+                    RecordTime = DateTime.Now.Subtract(TimeSpan.FromDays(31))
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var persons = await unitOfWOrk.PersonRepository.GetPersonsOlderThenAsync(30);
+                Assert.AreEqual("Hannes", persons.First().FirstName);
+                Assert.AreEqual("Ullisch", persons.First().LastName);
+                Assert.AreEqual(1, persons.Count());
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_PersonRepository_DeletePersonsOlderThen_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948",
+                    RecordTime = DateTime.Now
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525",
+                    RecordTime = DateTime.Now
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548",
+                    RecordTime = DateTime.Now.Subtract(TimeSpan.FromDays(31))
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636",
+                    RecordTime = DateTime.Now.Subtract(TimeSpan.FromDays(31))
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                var personsToDelete = await unitOfWOrk.PersonRepository.GetPersonsOlderThenAsync(30);
+                unitOfWOrk.PersonRepository.DeletePersons(personsToDelete);
+                await unitOfWOrk.SaveChangesAsync();
+
+                var persons = await unitOfWOrk.PersonRepository.GetAllPersonAsync();
+                Assert.AreEqual("Anna", persons.First().FirstName);
+                Assert.AreEqual("Nuss", persons.First().LastName);
+                Assert.AreEqual(2, persons.Count());
+            }
+        }       
     }
 }
