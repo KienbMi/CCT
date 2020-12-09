@@ -10,6 +10,7 @@ namespace CCT.Core.Contracts
     {
         Task AddPersonAsync(Person person);
         void AddPerson(Person person);
+        void DeletePerson(Person person);
         void DeletePersons(IEnumerable<Person> persons);
 
         Task<Person[]> GetAllPersonAsync();

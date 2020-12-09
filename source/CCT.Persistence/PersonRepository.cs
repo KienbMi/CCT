@@ -25,6 +25,9 @@ namespace CCT.Persistence
         public void AddPerson(Person person)
             => _dbContext.Persons.Add(person);
 
+        public void DeletePerson(Person person)
+            => _dbContext.Persons.Remove(person);
+
         public void DeletePersons(IEnumerable<Person> persons)
             => _dbContext.Persons.RemoveRange(persons);
 

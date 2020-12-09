@@ -51,6 +51,20 @@ namespace CCT.NfcReaderConsole
             return true;
         }
 
+        public static bool AddRemoveDummyInDb(ApplicationDbContext dbContext = null)
+        {
+            using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
+            {
+                Person person = new Person { FirstName = "Dummy" };
+
+                unitOfWork.PersonRepository.AddPerson(person);
+                unitOfWork.SaveChanges();
+                unitOfWork.PersonRepository.DeletePerson(person);
+                unitOfWork.SaveChanges();
+            }
+            return true;
+        }
+
         public static async Task DeletePersonsOlderThenInDbAsync(int days, ApplicationDbContext dbContext = null)
         {
             using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))

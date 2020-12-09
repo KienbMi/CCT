@@ -30,6 +30,7 @@ namespace ufr_mfp_console
             {
                 // Check database
                 FunctionsCCT.CheckDatabase();
+                FunctionsCCT.AddRemoveDummyInDb();
 
                 // Delete persons older then storage time (default 30 days) from database
                 await FunctionsCCT.DeletePersonsOlderThenInDbAsync(storageTimeInDays);
