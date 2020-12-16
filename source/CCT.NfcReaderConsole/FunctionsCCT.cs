@@ -93,5 +93,16 @@ namespace CCT.NfcReaderConsole
                 }
             }
         }
+
+        public static async Task<int> GetStorageDurationFromDbAsync(ApplicationDbContext dbContext = null)
+        {
+            using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
+            {
+                int storageDuration = await unitOfWork.SettingRepository.GetStorageDurationAsync();
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+                string welcomeText = await unitOfWork.SettingRepository.GetWelcomeTextAsync();
+                return storageDuration;
+            }
+        }
     }
 }
