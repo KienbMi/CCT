@@ -492,6 +492,18 @@ namespace CCT.Persistence.Test
                 Assert.AreEqual("Nuss", persons.First().LastName);
                 Assert.AreEqual(2, persons.Count());
             }
-        }       
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetDefaultPasswort_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+                Assert.AreEqual("cct", password);
+            }
+        }
     }
 }

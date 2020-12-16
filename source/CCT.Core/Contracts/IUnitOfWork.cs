@@ -8,6 +8,7 @@ namespace CCT.Core.Contracts
     public interface IUnitOfWork : IDisposable
     {
         IPersonRepository PersonRepository { get; }
+        ISettingRepository SettingRepository { get; }
 
         Task<int> SaveChangesAsync();
         int SaveChanges();
