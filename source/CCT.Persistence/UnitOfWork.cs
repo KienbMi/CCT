@@ -28,15 +28,18 @@ namespace CCT.Persistence
                 _dbContext = new ApplicationDbContext();
             }
             PersonRepository = new PersonRepository(_dbContext);
+            SettingRepository = new SettingRepository(_dbContext);
         }
 
         public UnitOfWork(ApplicationDbContext dbContext)
         {            
             _dbContext = dbContext;
             PersonRepository = new PersonRepository(_dbContext);
+            SettingRepository = new SettingRepository(_dbContext);
         }
 
         public IPersonRepository PersonRepository { get; }
+        public ISettingRepository SettingRepository { get; }
 
 
         /// <summary>

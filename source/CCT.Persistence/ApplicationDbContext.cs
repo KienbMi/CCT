@@ -21,6 +21,7 @@ namespace CCT.Persistence
         }
 
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
