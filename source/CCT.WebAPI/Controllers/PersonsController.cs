@@ -114,6 +114,26 @@ namespace CCT.WebAPI.Controllers
         }
 
         /// <summary>
+        /// returns all entries for the given timespan
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("fromto")]
+        public async Task<ActionResult<Person[]>> GetPersonsForTimespan(DateTime from, DateTime to)
+        {
+            var persons = await _unitOfWork.PersonRepository.GetPersonsForTimeSpanAsync(from, to);
+
+            if (persons != null)
+            {
+                return Ok(persons);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
         /// Posts a person to the DB
         /// </summary>
         /// <param name="personDto"></param>

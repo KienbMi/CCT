@@ -1,10 +1,23 @@
-﻿@page
+﻿@page "{handler?}"
 @model IndexModel
 @{
     ViewData["Title"] = "CCT";
 }
 
 <form method="post">
+
+    <div>
+        <label class="control-label">Datum: </label>
+        <input asp-for="Date" class="form-control" />
+        <label class="control-label">Uhrzeit von: </label>
+        <input asp-for="From" class="form-control" />
+        <label class="control-label">Uhrzeit bis: </label>
+        <input asp-for="To" class="form-control" />
+    </div>
+
+    <div>
+        <input type="submit" value="Filter anwenden" class="btn btn-default" />
+    </div>
 
     <table class="table">
 

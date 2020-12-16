@@ -12,7 +12,7 @@ namespace CCT.Core.Contracts
         void AddPerson(Person person);
 
         Task<Person[]> GetAllPersonAsync();
-
+        Task<Person[]> GetPersonsForTimeSpanAsync(DateTime from, DateTime to);
         Task<Person> GetPersonByPhoneNumberAsync(string phoneNumber);
         Task<Person[]> GetPersonsByDateAsync(DateTime date);
         Task<Person[]> GetPersonsForTodayAsync();

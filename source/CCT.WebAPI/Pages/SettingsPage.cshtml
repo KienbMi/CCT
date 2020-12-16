@@ -1,0 +1,31 @@
+﻿@page "{handler?}"
+@model CCT.WebAPI.Pages.SettingsPageModel
+@{
+}
+
+<h1>Einstellungen</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label class="control-label">Dauer der Datenaufbewahrung</label>
+        <input asp-for="StorageDuration" class="form-control" />
+        <span asp-validation-for="StorageDuration" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Passwort</label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Wilkommensnachricht nach Registrierung</label>
+        <input asp-for="WelcomeMessage" class="form-control" />
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input type="submit" value="Einstellungen speichern" class="btn btn-default" />
+    </div>
+    @if(Model.LabelTextSuccess != null)
+    {
+        @Model.LabelTextSuccess;
+    }
+</form>

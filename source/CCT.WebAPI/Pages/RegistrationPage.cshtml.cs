@@ -15,6 +15,8 @@ namespace CCT.WebAPI.Pages
         private readonly IUnitOfWork _uow;
 
         [BindProperty]
+        public string LabelTextAfterRegistration { get; set; }
+        [BindProperty]
         public string FirstName { get; set; }
         [BindProperty]
         public string LastName { get; set; }
@@ -41,13 +43,15 @@ namespace CCT.WebAPI.Pages
                     PhoneNumber = PhoneNumber,
                     RecordTime = DateTime.Now
                 });
+
+                LabelTextAfterRegistration = "Erfolgreich registriert!";
             }
             catch(ApiException<APIService.ProblemDetails> ex)
             {
 
             }
 
-            return RedirectToPage("/Index");
+            return Page();
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿@page "{handler}"
+@model CCT.WebAPI.Pages.LoginPageModel
+@{
+}
+
+<h1>Einloggen</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="LastPage" />
+    <div class="form-group">
+        <label class="control-label">Passwort</label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input asp-page-handler="Login" type="submit" value="Einloggen" class="btn btn-default" />
+    </div>
+    @if (Model.LabelTextWrongPassword != null)
+    {
+        <div class="form-group">
+            @Model.LabelTextWrongPassword
+        </div>
+    }
+</form>

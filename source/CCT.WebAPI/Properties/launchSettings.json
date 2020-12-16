@@ -20,7 +20,7 @@
     "CCT.WebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "RegistrationPage",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
