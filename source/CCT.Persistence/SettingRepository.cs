@@ -110,7 +110,7 @@ namespace CCT.Persistence
                 Setting newSetting = new Setting
                 {
                     Name = P01_StorageDuration,
-                    Type = 0,
+                    Type = 1,
                     Value = days.ToString()
                 };
 
