@@ -495,14 +495,63 @@ namespace CCT.Persistence.Test
         }
 
         [TestMethod]
-        public async Task UnitOfWork_SettingRepository_GetDefaultPasswort_ShouldReturnCorrectValue()
+        public async Task UnitOfWork_SettingRepository_GetDefaultPassword_ShouldReturnCorrectValue()
         {
             string dbName = Guid.NewGuid().ToString();
 
             using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
             {
+                // Arrange
+                string expectedPassword = "cct";
+
+                // Act
                 string password = await unitOfWork.SettingRepository.GetPasswordAsync();
-                Assert.AreEqual("cct", password);
+                
+                // Assert
+                Assert.AreEqual(expectedPassword, password);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetPassword_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedPassword = "testPassword";
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword);
+                unitOfWork.SaveChanges();
+               
+                // Act
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+
+                // Assert
+                Assert.AreEqual(expectedPassword, password);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_SetTwoPasswords_ShouldReturnSecondPassword()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedPassword1 = "testPassword1";
+                string expectedPassword2 = "testPassword2";
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword1);
+                unitOfWork.SaveChanges();
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword2);
+                unitOfWork.SaveChanges();
+
+                // Act
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+
+                // Assert
+                Assert.AreEqual(expectedPassword2, password);
             }
         }
     }
