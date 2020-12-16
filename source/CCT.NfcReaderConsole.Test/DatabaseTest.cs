@@ -144,11 +144,54 @@ namespace CCT.NfcReaderConsole.Test
                 Person[] personsInDb = await unitOfWork.PersonRepository.GetAllPersonAsync();
                 Assert.IsNotNull(personsInDb);
                 Assert.AreEqual(1, personsInDb.Length);
-                Assert.AreEqual(expectedFirstName, person.FirstName);
-                Assert.AreEqual(expectedLastName, person.LastName);
-                Assert.AreEqual(expectedPhoneNumber, person.PhoneNumber);
-                Assert.AreEqual(DateTime.Now.Date, person.RecordTime.Date);
-                Assert.AreEqual(DateTime.Now.Hour, person.RecordTime.Hour);
+                Assert.AreEqual(expectedFirstName, personsInDb[0].FirstName);
+                Assert.AreEqual(expectedLastName, personsInDb[0].LastName);
+                Assert.AreEqual(expectedPhoneNumber, personsInDb[0].PhoneNumber);
+                Assert.AreEqual(DateTime.Now.Date, personsInDb[0].RecordTime.Date);
+                Assert.AreEqual(DateTime.Now.Hour, personsInDb[0].RecordTime.Hour);
+            }
+        }
+
+        [TestMethod]
+        public async Task D05_DeletePersonsOlderThenThen()
+        {
+            //Arrange
+            string dbName = Guid.NewGuid().ToString();
+            string expectedFirstName = "Max";
+            string expectedLastName = "Mustermann";
+            string expectedPhoneNumber = "066412345667";
+            Person person1 = new Person
+            {
+                FirstName = expectedFirstName,
+                LastName = expectedLastName,
+                PhoneNumber = expectedPhoneNumber,
+                RecordTime = DateTime.Now
+            };
+            Person person2 = new Person
+            {
+                FirstName = "Max",
+                LastName = "Mustermann",
+                PhoneNumber = "0732332211",
+                RecordTime = DateTime.Now.Subtract(TimeSpan.FromDays(31))
+            };
+            
+            //Act
+            FunctionsCCT.AddPersonToDb(person2, GetDbContext(dbName));
+            FunctionsCCT.AddPersonToDb(person1, GetDbContext(dbName));
+
+            await FunctionsCCT.DeletePersonsOlderThenInDbAsync(30, GetDbContext(dbName));
+
+            //Assert
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person[] personsInDb = await unitOfWork.PersonRepository.GetAllPersonAsync();
+                Assert.IsNotNull(personsInDb);
+                Assert.AreEqual(1, personsInDb.Length);
+                Assert.AreEqual(expectedFirstName, personsInDb[0].FirstName);
+                Assert.AreEqual(expectedLastName, personsInDb[0].LastName);
+                Assert.AreEqual(expectedPhoneNumber, personsInDb[0].PhoneNumber);
+                Assert.AreEqual(DateTime.Now.Date, personsInDb[0].RecordTime.Date);
+                Assert.AreEqual(DateTime.Now.Hour, personsInDb[0].RecordTime.Hour);
             }
         }
     }
