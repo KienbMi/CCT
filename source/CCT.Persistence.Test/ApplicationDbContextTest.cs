@@ -492,6 +492,189 @@ namespace CCT.Persistence.Test
                 Assert.AreEqual("Nuss", persons.First().LastName);
                 Assert.AreEqual(2, persons.Count());
             }
-        }       
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetDefaultPassword_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedPassword = "cct";
+
+                // Act
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+                
+                // Assert
+                Assert.AreEqual(expectedPassword, password);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetPassword_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedPassword = "testPassword";
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword);
+                unitOfWork.SaveChanges();
+               
+                // Act
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+
+                // Assert
+                Assert.AreEqual(expectedPassword, password);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_SetTwoPasswords_ShouldReturnSecondPassword()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedPassword1 = "testPassword1";
+                string expectedPassword2 = "testPassword2";
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword1);
+                unitOfWork.SaveChanges();
+                await unitOfWork.SettingRepository.SetPasswordAsync(expectedPassword2);
+                unitOfWork.SaveChanges();
+
+                // Act
+                string password = await unitOfWork.SettingRepository.GetPasswordAsync();
+
+                // Assert
+                Assert.AreEqual(expectedPassword2, password);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetDefaultStorageDuration_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                int expectedStorageDuration = 30;
+
+                // Act
+                int storageDuration = await unitOfWork.SettingRepository.GetStorageDurationAsync();
+
+                // Assert
+                Assert.AreEqual(expectedStorageDuration, storageDuration);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetStorageDuration_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                int expectedStorageDuration = 25;
+                await unitOfWork.SettingRepository.SetStorageDurationAsync(expectedStorageDuration);
+                unitOfWork.SaveChanges();
+
+                // Act
+                int storageDuration = await unitOfWork.SettingRepository.GetStorageDurationAsync();
+
+                // Assert
+                Assert.AreEqual(expectedStorageDuration, storageDuration);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_SetTwoStorageDuration_ShouldReturnSecondStorageDuration()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                int expectedStorageDuration1 = 25;
+                int expectedStorageDuration2 = 68;
+                await unitOfWork.SettingRepository.SetStorageDurationAsync(expectedStorageDuration1);
+                unitOfWork.SaveChanges();
+                await unitOfWork.SettingRepository.SetStorageDurationAsync(expectedStorageDuration2);
+                unitOfWork.SaveChanges();
+
+                // Act
+                int storageDuration = await unitOfWork.SettingRepository.GetStorageDurationAsync();
+
+                // Assert
+                Assert.AreEqual(expectedStorageDuration2, storageDuration);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetDefaultWelcomeText_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedWelcomeText = "Herzlich Willkommen!";
+
+                // Act
+                string welcomeText = await unitOfWork.SettingRepository.GetWelcomeTextAsync();
+
+                // Assert
+                Assert.AreEqual(expectedWelcomeText, welcomeText);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetWelcomeText_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedWelcomeText = "Sie sind nun angemeldet";
+                await unitOfWork.SettingRepository.SetWelcomeTextAsync(expectedWelcomeText);
+                unitOfWork.SaveChanges();
+
+                // Act
+                string welcomeText = await unitOfWork.SettingRepository.GetWelcomeTextAsync();
+
+                // Assert
+                Assert.AreEqual(expectedWelcomeText, welcomeText);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_SetTwoWelcomeText_ShouldReturnSecondWelcomeText()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                string expectedWelcomeText1 = "Sie sind nun angemeldet!";
+                string expectedWelcomeText2 = "Anmeldung war erfolgreich!";
+                await unitOfWork.SettingRepository.SetWelcomeTextAsync(expectedWelcomeText1);
+                unitOfWork.SaveChanges();
+                await unitOfWork.SettingRepository.SetWelcomeTextAsync(expectedWelcomeText2);
+                unitOfWork.SaveChanges();
+
+                // Act
+                string welcomeText = await unitOfWork.SettingRepository.GetWelcomeTextAsync();
+
+                // Assert
+                Assert.AreEqual(expectedWelcomeText2, welcomeText);
+            }
+        }
     }
 }
