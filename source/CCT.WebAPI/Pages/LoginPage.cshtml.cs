@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CCT.APIService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,6 +10,7 @@ namespace CCT.WebAPI.Pages
 {
     public class LoginPageModel : PageModel
     {
+        private SettingsClient _settingCLient;
         private string _password = "cct";
 
         [BindProperty]
@@ -27,6 +29,10 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync(string handler)
         {
+            _settingCLient = new SettingsClient();
+
+            _password = await _settingCLient.GetPasswordAsync();
+
             if(Password == _password)
             {
                 if(LastPage == "Index")
