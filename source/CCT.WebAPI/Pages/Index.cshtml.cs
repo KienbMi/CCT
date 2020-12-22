@@ -46,10 +46,37 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
-            DateTime from = DateTime.Parse(Date);
-            from = from + TimeSpan.Parse(From);
-            DateTime to = DateTime.Parse(Date);
-            to = to + TimeSpan.Parse(To);
+            bool isValid = true;
+            DateTime date = DateTime.Today;
+            TimeSpan timeFrom = TimeSpan.Zero;
+            TimeSpan timeTo = TimeSpan.FromDays(1).Subtract(TimeSpan.FromSeconds(1));
+
+            if (!DateTime.TryParse(Date, out date))
+            {
+                isValid = false;
+                ModelState.AddModelError(nameof(Date), "Bitte gültiges Datumformat eingeben (dd.MM.yyyy)");
+            }
+
+            if (!String.IsNullOrWhiteSpace(From) && !TimeSpan.TryParse(From, out timeFrom))
+            {
+                isValid = false;
+                ModelState.AddModelError(nameof(From), "Bitte gültiges Zeitformat eingeben (hh:mm)");
+            }
+
+            if (!String.IsNullOrWhiteSpace(To) && !TimeSpan.TryParse(To, out timeTo))
+            {
+                isValid = false;
+                ModelState.AddModelError(nameof(To), "Bitte gültiges Zeitformat eingeben (hh:mm)");
+            }
+
+            if (!isValid)
+            {
+                PeopleOverview = await _pc.GetAllPersonsAsync();
+                return Page();
+            }
+
+            DateTime from = date + timeFrom;
+            DateTime to = date + timeTo;
 
             PeopleOverview = await _pc.GetPersonsForTimespanAsync(from, to);
 
