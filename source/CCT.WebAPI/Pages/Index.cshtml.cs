@@ -44,7 +44,7 @@ namespace CCT.WebAPI.Pages
             return Page();
         }
 
-        public async Task<ActionResult> OnPostAsync()
+        public async Task<ActionResult> OnPostFilterAsync()
         {
             bool isValid = true;
             DateTime date = DateTime.Today;
@@ -79,6 +79,13 @@ namespace CCT.WebAPI.Pages
             DateTime to = date + timeTo;
 
             PeopleOverview = await _pc.GetPersonsForTimespanAsync(from, to);
+
+            return Page();
+        }
+
+        public async Task<ActionResult> OnPostDeleteAsync()
+        {
+            PeopleOverview = await _pc.GetAllPersonsAsync();
 
             return Page();
         }
