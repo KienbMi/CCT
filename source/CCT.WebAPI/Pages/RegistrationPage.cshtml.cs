@@ -11,6 +11,7 @@ namespace CCT.WebAPI.Pages
 {
     public class RegistrationPageModel : PageModel
     {
+        private SettingsClient _sc;
         private PersonsClient _pc;
         private readonly IUnitOfWork _uow;
 
@@ -27,7 +28,9 @@ namespace CCT.WebAPI.Pages
         {
             _uow = unitOfWork;
             _pc = new PersonsClient();
+            _sc = new SettingsClient();
         }
+
         public async Task OnGetAsync()
         {
         }
@@ -44,11 +47,11 @@ namespace CCT.WebAPI.Pages
                     RecordTime = DateTime.Now
                 });
 
-                LabelTextAfterRegistration = "Erfolgreich registriert!";
+                LabelTextAfterRegistration = await _sc.GetWelcomeTextAsync();
             }
             catch(ApiException<APIService.ProblemDetails> ex)
             {
-
+                ModelState.AddModelError("", ex.Result.Detail);
             }
 
             return Page();
