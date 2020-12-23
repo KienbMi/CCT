@@ -49,7 +49,7 @@ namespace CCT.WebAPI.Pages
             bool isValid = true;
             DateTime date = DateTime.Today;
             TimeSpan timeFrom = TimeSpan.Zero;
-            TimeSpan timeTo = TimeSpan.FromDays(1).Subtract(TimeSpan.FromSeconds(1));
+            TimeSpan timeTo = TimeSpan.FromDays(1);
 
             if (!DateTime.TryParse(Date, out date))
             {
