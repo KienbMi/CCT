@@ -11,7 +11,8 @@ namespace ufr_mfp_console
     class Program
     {      
         static async Task<int> Main(string[] args)
-        {       
+        {
+            string _actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             DateTime _dateOld = DateTime.Now;
             int cyleTime = 300; // milliseconds
             char c;
@@ -38,7 +39,10 @@ namespace ufr_mfp_console
                         Functions_uFR.reader_automaticOpen();
                         break;
                     case ReaderType.RC522:
-                        // toDo
+                        if (_actEnvironment.StartsWith("RPI"))
+                        {
+                            // toDo
+                        }
                         break;
                     default:
                         Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
@@ -56,7 +60,7 @@ namespace ufr_mfp_console
                                 ReadCycle_uFR();
                                 break;
                             case ReaderType.RC522:
-                                // toDo
+                                ReadCycle_RC522(_actEnvironment);
                                 break;
                             default:
                                 Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
@@ -159,6 +163,12 @@ namespace ufr_mfp_console
                 default:
                     break;
             }
+        }
+
+        static void ReadCycle_RC522(string actEnvironment)
+        {
+            if (actEnvironment.StartsWith("RPI") == false)
+                return;
         }
     }
 }
