@@ -3,7 +3,6 @@ using CCT.NfcReaderConsole;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using uFR;
 
 namespace ufr_mfp_console
@@ -13,6 +12,7 @@ namespace ufr_mfp_console
         static async Task<int> Main(string[] args)
         {
             string _actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            bool _card_in_field_uFR = false, _card_in_field_RC522 = false;
             DateTime _dateOld = DateTime.Now;
             int cyleTime = 300; // milliseconds
             char c;
@@ -39,7 +39,7 @@ namespace ufr_mfp_console
                         Functions_uFR.reader_automaticOpen();
                         break;
                     case ReaderType.RC522:
-                        if (_actEnvironment.StartsWith("RPI"))
+                        if (_actEnvironment != null && _actEnvironment.StartsWith("RPI"))
                         {
                             // toDo
                         }
@@ -57,16 +57,17 @@ namespace ufr_mfp_console
                         switch (_readerType)
                         {
                             case ReaderType.uFr:
-                                ReadCycle_uFR();
+                                ReadCycle_uFR(ref _card_in_field_uFR);
                                 break;
                             case ReaderType.RC522:
-                                ReadCycle_RC522(_actEnvironment);
+                                ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522);
                                 break;
                             default:
                                 Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
                                 break;
                         }
-
+                      
+                        ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to Delete
                         Thread.Sleep(cyleTime);
 
                         // Delete persons older then storage time (default 30 days) from database
@@ -103,7 +104,7 @@ namespace ufr_mfp_console
         /// <summary>
         /// Read Nfc Tag from µFR Reader and transfer data to database
         /// </summary>
-        static void ReadCycle_uFR()
+        static void ReadCycle_uFR(ref bool card_in_field)
         {
             //signaling
             const byte FRES_OK_LIGHT = 0x01,    // long green
@@ -112,7 +113,6 @@ namespace ufr_mfp_console
                        FERR_SOUND = 0x00;       // none
 
             uFR.DL_STATUS dl_status;
-            bool card_in_field = false;
             string nfcDataContent = string.Empty;
 
             (dl_status, nfcDataContent) = Functions_uFR.ReadLinear();
@@ -165,10 +165,48 @@ namespace ufr_mfp_console
             }
         }
 
-        static void ReadCycle_RC522(string actEnvironment)
+        static void ReadCycle_RC522(string actEnvironment, ref bool card_in_field)
         {
-            if (actEnvironment.StartsWith("RPI") == false)
+            if (actEnvironment == null || actEnvironment.StartsWith("RPI") == false)
                 return;
+
+            Functions_RC522.InvertLedSignal();
+
+            string nfcDataContent = Functions_RC522.ReadTagFromRC522();
+
+            // data from reader received ?
+            if (string.IsNullOrEmpty(nfcDataContent) == false && card_in_field == false)
+            {
+                card_in_field = true;
+                Console.WriteLine(nfcDataContent);
+                Person person = FunctionsCCT.ParseNfcDataToPerson(nfcDataContent);
+
+                if (person != null)
+                {
+                    bool dbSaveOk = false;
+                    try
+                    {
+                        dbSaveOk = FunctionsCCT.AddPersonToDb(person);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Could not write to database");
+                        // Signal not ok ??;
+                        WriteExceptions(ex);
+                    }
+                    Console.WriteLine(nfcDataContent);
+                    if (dbSaveOk)
+                    {
+                        // Signal ok;
+                    }
+                }
+            }
+            else
+            {
+                card_in_field = false;
+            }
+
+            Thread.Sleep(500);
         }
     }
 }
