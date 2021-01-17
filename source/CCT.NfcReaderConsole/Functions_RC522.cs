@@ -82,5 +82,14 @@ namespace CCT.NfcReaderConsole
             }
             return result;
         }
+
+        public static void ResetSignals()
+        {
+            if (_initDone)
+            {
+                _blinkingPin.Write(false);
+                Console.WriteLine("* ResetSignals *");
+            }
+        }
     }
 }

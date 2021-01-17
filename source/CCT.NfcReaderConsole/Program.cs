@@ -87,6 +87,8 @@ namespace ufr_mfp_console
                 Console.WriteLine($"Unexpected error occured:");
                 WriteExceptions(ex);
             }
+
+            Functions_RC522.ResetSignals();
             return 0;
         }
 
