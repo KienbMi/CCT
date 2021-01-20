@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CCT.APIService;
@@ -20,10 +21,16 @@ namespace CCT.WebAPI.Pages
         [BindProperty]
         public string NameAfterRegistrationText { get; set; }
         [BindProperty]
+        [Required(ErrorMessage = "Vorname ist verpflichtend!")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Vorname muss mindestens 1 Zeichen lang sein!")]
         public string FirstName { get; set; }
         [BindProperty]
+        [Required(ErrorMessage = "Nachname ist verpflichtend!")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Nachname muss mindestens 1 Zeichen lang sein!")]
         public string LastName { get; set; }
         [BindProperty]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Telefonnummer muss mindestens 5 Zeichen lang sein!")]
+        [Required(ErrorMessage = "Telefonnummer ist verpflichtend!")]
         public string PhoneNumber { get; set; }
         [BindProperty]
         public bool IsVaccinated { get; set; }
@@ -41,27 +48,30 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
-            try
+            if(ModelState.IsValid)
             {
-                var newPerson = new PersonDto
+                try
                 {
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    PhoneNumber = PhoneNumber,
-                    RecordTime = DateTime.Now,
-                    IsVaccinated = IsVaccinated
-                };
+                    var newPerson = new PersonDto
+                    {
+                        FirstName = FirstName,
+                        LastName = LastName,
+                        PhoneNumber = PhoneNumber,
+                        RecordTime = DateTime.Now,
+                        IsVaccinated = IsVaccinated
+                    };
 
-                await _pc.PostPersonAsync(newPerson);
+                    await _pc.PostPersonAsync(newPerson);
 
-                NameAfterRegistrationText = $"Hallo, {FirstName}!";
-                LabelTextAfterRegistration = await _sc.GetWelcomeTextAsync();
+                    NameAfterRegistrationText = $"Hallo, {FirstName}!";
+                    LabelTextAfterRegistration = await _sc.GetWelcomeTextAsync();
+                }
+                catch (ApiException<APIService.ProblemDetails> ex)
+                {
+                    ModelState.AddModelError("", ex.Result.Detail);
+                }
             }
-            catch(ApiException<APIService.ProblemDetails> ex)
-            {
-                ModelState.AddModelError("", ex.Result.Detail);
-            }
-
+            
             return Page();
         }
 
