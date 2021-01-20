@@ -10,7 +10,7 @@ The Program is aimed to run on a Raspberry Pi that has a NFC Reader connected. T
 Used technologies:
 * dotnet Core 3.1
 * Entity Framework Core
-* Angular CLI
+* Razor Page
 * SQLite
 * Raspberry Pi
 * uFR Classic NFC Reader
