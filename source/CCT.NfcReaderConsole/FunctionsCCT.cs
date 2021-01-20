@@ -94,6 +94,13 @@ namespace CCT.NfcReaderConsole
             }
         }
 
+        public static async Task DeletePersonsOutsideStoragePeriode()
+        {
+            int storageTimeInDays = await FunctionsCCT.GetStorageDurationFromDbAsync();
+            await DeletePersonsOlderThenInDbAsync(storageTimeInDays);
+        }
+
+
         public static async Task<int> GetStorageDurationFromDbAsync(ApplicationDbContext dbContext = null)
         {
             using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
@@ -103,4 +110,16 @@ namespace CCT.NfcReaderConsole
             }
         }
     }
+
+    enum Mode
+    {
+        Read,
+        Write
+    };
+
+    enum ReaderType
+    {
+        uFr,
+        RC522
+    };
 }

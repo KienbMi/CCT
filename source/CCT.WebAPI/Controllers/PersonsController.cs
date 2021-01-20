@@ -63,7 +63,7 @@ namespace CCT.WebAPI.Controllers
 
         private string CleanPhoneNumber(string phoneNumber)
         {
-            if(phoneNumber.Contains("/"))
+            if(phoneNumber != null && phoneNumber.Contains("/"))
             {
                 string cleanString = phoneNumber.Replace("/", string.Empty);
                 return cleanString;

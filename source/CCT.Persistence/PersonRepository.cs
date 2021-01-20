@@ -55,7 +55,7 @@ namespace CCT.Persistence
                 .Where(p => p.RecordTime.AddDays(days + 1) <= DateTime.Now)
                 .ToArrayAsync();
         public async Task<Person[]> GetPersonsForTimeSpanAsync(DateTime from, DateTime to)
-            => await _dbContext.Persons.Where(p => p.RecordTime.Date == from.Date && p.RecordTime.TimeOfDay >= from.TimeOfDay && p.RecordTime.TimeOfDay <= to.TimeOfDay)
-                            .ToArrayAsync();
+            => await _dbContext.Persons.Where(p => p.RecordTime >= from && p.RecordTime <= to)
+                .ToArrayAsync();
     }
 }

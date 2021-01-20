@@ -439,6 +439,63 @@ namespace CCT.Persistence.Test
         }
 
         [TestMethod]
+        public async Task UnitOfWork_PersonRepository_GetPersonsBeetween_ShouldReturnCorrectPerson()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                Person person1 = new Person
+                {
+                    FirstName = "Anna",
+                    LastName = "Nuss",
+                    PhoneNumber = "0664/9032948",
+                    RecordTime = DateTime.Parse("2020-11-04")
+                };
+                Person person2 = new Person
+                {
+                    FirstName = "Hans",
+                    LastName = "Gruber",
+                    PhoneNumber = "0664/4255525",
+                    RecordTime = DateTime.Parse("2020-11-04")
+                };
+                Person person3 = new Person
+                {
+                    FirstName = "Alfred",
+                    LastName = "Bauer",
+                    PhoneNumber = "0650/9442548",
+                    RecordTime = DateTime.Parse("2020-11-04")
+                };
+                Person person4 = new Person
+                {
+                    FirstName = "Hannes",
+                    LastName = "Ullisch",
+                    PhoneNumber = "0680/1145636",
+                    RecordTime = DateTime.Parse("2020-11-06")
+                };
+
+                await unitOfWork.PersonRepository.AddPersonAsync(person1);
+                await unitOfWork.PersonRepository.AddPersonAsync(person2);
+                await unitOfWork.PersonRepository.AddPersonAsync(person3);
+                await unitOfWork.PersonRepository.AddPersonAsync(person4);
+                await unitOfWork.SaveChangesAsync();
+            }
+
+
+            using (IUnitOfWork unitOfWOrk = new UnitOfWork(GetDbContext(dbName)))
+            {
+                DateTime from = DateTime.Parse("2020-11-06");
+                DateTime to = DateTime.Parse("2020-11-07");
+
+
+                var persons = await unitOfWOrk.PersonRepository.GetPersonsForTimeSpanAsync(from, to);
+                Assert.AreEqual("Hannes", persons.First().FirstName);
+                Assert.AreEqual("Ullisch", persons.First().LastName);
+                Assert.AreEqual(1, persons.Count());
+            }
+        }
+
+        [TestMethod]
         public async Task UnitOfWork_PersonRepository_DeletePersonsOlderThen_ShouldReturnCorrectPerson()
         {
             string dbName = Guid.NewGuid().ToString();

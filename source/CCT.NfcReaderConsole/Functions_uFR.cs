@@ -12,7 +12,7 @@ namespace ufr_mfp_console
 {
     using DL_STATUS = UInt32;
 
-    class Functions
+    class Functions_uFR
     {
         static DL_STATUS status;
 
