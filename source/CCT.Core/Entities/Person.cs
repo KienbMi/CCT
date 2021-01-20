@@ -14,5 +14,6 @@ namespace CCT.Core.Entities
         [MaxLength(100)]
         public string PhoneNumber { get; set; }
         public DateTime RecordTime { get; set; }
+        public bool IsVaccinated { get; set; }
     }
 }

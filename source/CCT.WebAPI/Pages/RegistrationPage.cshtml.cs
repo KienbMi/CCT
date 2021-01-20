@@ -18,11 +18,15 @@ namespace CCT.WebAPI.Pages
         [BindProperty]
         public string LabelTextAfterRegistration { get; set; }
         [BindProperty]
+        public string NameAfterRegistrationText { get; set; }
+        [BindProperty]
         public string FirstName { get; set; }
         [BindProperty]
         public string LastName { get; set; }
         [BindProperty]
         public string PhoneNumber { get; set; }
+        [BindProperty]
+        public bool IsVaccinated { get; set; }
 
         public RegistrationPageModel(IUnitOfWork unitOfWork)
         {
@@ -39,14 +43,18 @@ namespace CCT.WebAPI.Pages
         {
             try
             {
-                await _pc.PostPersonAsync(new PersonDto
+                var newPerson = new PersonDto
                 {
                     FirstName = FirstName,
                     LastName = LastName,
                     PhoneNumber = PhoneNumber,
-                    RecordTime = DateTime.Now
-                });
+                    RecordTime = DateTime.Now,
+                    IsVaccinated = IsVaccinated
+                };
 
+                await _pc.PostPersonAsync(newPerson);
+
+                NameAfterRegistrationText = $"Hallo, {FirstName}!";
                 LabelTextAfterRegistration = await _sc.GetWelcomeTextAsync();
             }
             catch(ApiException<APIService.ProblemDetails> ex)
@@ -55,6 +63,11 @@ namespace CCT.WebAPI.Pages
             }
 
             return Page();
+        }
+
+        public IActionResult OnPostReset()
+        {
+            return RedirectToPage("RegistrationPage");
         }
     }
 }

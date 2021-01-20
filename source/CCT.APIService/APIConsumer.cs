@@ -1263,6 +1263,9 @@ namespace CCT.APIService
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset RecordTime { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isVaccinated", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsVaccinated { get; set; }
+    
     
     }
     
@@ -1329,6 +1332,9 @@ namespace CCT.APIService
         [Newtonsoft.Json.JsonProperty("recordTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset RecordTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isVaccinated", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsVaccinated { get; set; }
     
     
     }

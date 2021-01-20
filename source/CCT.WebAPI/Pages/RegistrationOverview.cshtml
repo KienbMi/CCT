@@ -1,0 +1,89 @@
+﻿@page "{handler?}"
+@model RegistrationOverviewModel
+@{
+    ViewData["Title"] = "CCT";
+}
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <form method="post">
+
+        <div>
+            <div>
+                <label class="control-label">Datum: </label>
+                <input autocomplete="off" asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="alert-danger"></span>
+            </div>
+            <div>
+                <label class="control-label">Uhrzeit von: </label>
+                <input autocomplete="off" asp-for="From" class="form-control" />
+                <span asp-validation-for="From" class="alert-danger"></span>
+            </div>
+            <div>
+                <label class="control-label">Uhrzeit bis: </label>
+                <input autocomplete="off" asp-for="To" class="form-control" />
+                <span asp-validation-for="To" class="alert-danger"></span>
+            </div>
+
+        </div>
+        <br />
+        <div>
+            <input asp-page-handler="Filter" type="submit" value="Filter anwenden" class="btn btn-default" />
+            <input asp-page-handler="Delete" type="submit" value="Filter löschen" class="btn btn-default" />
+        </div>
+
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th>
+                        <label>Vorname</label>
+                    </th>
+                    <th>
+                        <label>Nachname</label>
+                    </th>
+                    <th>
+                        <label>Telefonnummer</label>
+                    </th>
+                    <th>
+                        <label>Registrationsdatum</label>
+                    </th>
+                    <th>
+                        <label>Ist geimpft</label>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.PeopleOverview)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(_ => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.RecordTime.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.IsVaccinated)
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </form>
+</body>
+</html>

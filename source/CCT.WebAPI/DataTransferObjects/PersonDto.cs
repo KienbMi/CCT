@@ -20,5 +20,7 @@ namespace CCT.WebAPI.DataTransferObjects
         public string PhoneNumber { get; set; }
         [DisplayName("Datum")]
         public DateTime RecordTime { get; set; }
+        [DisplayName("Ist geimpft")]
+        public bool IsVaccinated { get; set; }
     }
 }

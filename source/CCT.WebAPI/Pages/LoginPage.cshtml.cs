@@ -11,7 +11,7 @@ namespace CCT.WebAPI.Pages
     public class LoginPageModel : PageModel
     {
         private SettingsClient _settingCLient;
-        private string _password = "cct";
+        private string _password;
 
         [BindProperty]
         public string LastPage { get; set; }
@@ -37,7 +37,7 @@ namespace CCT.WebAPI.Pages
             {
                 if(LastPage == "Index")
                 {
-                    return RedirectToPage("/Index", handler);
+                    return RedirectToPage("/RegistrationOverview", handler);
                 }
                 else if(LastPage == "Settings")
                 {
