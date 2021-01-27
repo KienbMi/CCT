@@ -20,10 +20,12 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <!---- Shows photo in browser -------------->
-                <img alt="Keine Bild"
-                     src="~/images/Logo.png"
-                     style="height:52px;width:100px;" />
+                <!---- Shows logo in browser -------------->
+                <a asp-page="/Index" class="navbar-brand" target="_self">
+                    <img alt="Bild"
+                         src="~/images/Logo.png"
+                         style="height:25px;width:100px;position:sticky" />
+                </a>
                 <!------------- End of image viewer -------->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -31,7 +33,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!--a asp-page="/Index" class="navbar-brand">CCT.WebAPI</a-->
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
