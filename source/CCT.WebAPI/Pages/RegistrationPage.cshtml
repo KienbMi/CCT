@@ -34,17 +34,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input type="submit" value="Registrieren" class="btn btn-default" />
+
+                <input asp-page-handler="Reset" type="submit" value="Löschen" class="btn btn-danger" />
             </div>
             @if (Model.LabelTextAfterRegistration != null)
             {
                 <div class="form-group">
-                    @Model.NameAfterRegistrationText
-                    @Model.LabelTextAfterRegistration
+                    <p class="text-success">@Model.NameAfterRegistrationText</p>
+                    <p class="text-success">@Model.LabelTextAfterRegistration</p>
                 </div>
 
-                <div class="form-group">
-                    <input asp-page-handler="Reset" type="submit" value="Zurück" class="btn btn-default" />
-                </div>
+                <meta http-equiv="refresh" content="5" />
             }
 
         </form>
