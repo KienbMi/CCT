@@ -1,4 +1,5 @@
-﻿using CCT.Core.Entities;
+﻿using CCT.Core;
+using CCT.Core.Entities;
 using CCT.NfcReaderConsole;
 using System;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace ufr_mfp_console
             char c;
 
             Mode _operationMode = Mode.Read;
-            ReaderType _readerType = ReaderType.uFr;
+            NfcReaderType _nfcReaderType = NfcReaderType.uFr;
 
             try
             {
@@ -29,16 +30,19 @@ namespace ufr_mfp_console
                 // Delete persons older then storage time (default 30 days) from database
                 await FunctionsCCT.DeletePersonsOutsideStoragePeriode();
 
+                // Get NfcReaderType from database
+                _nfcReaderType = await FunctionsCCT.GetNfcReaderTypeFromDbAsync();
+
                 // Start NFC-Reader programm
                 Functions_uFR.headline();
 
                 // Init Reader
-                switch (_readerType)
+                switch (_nfcReaderType)
                 {
-                    case ReaderType.uFr:            
+                    case NfcReaderType.uFr:            
                         Functions_uFR.reader_automaticOpen();
                         break;
-                    case ReaderType.RC522:
+                    case NfcReaderType.RC522:
                         if (_actEnvironment != null && _actEnvironment.StartsWith("RPI"))
                         {
                             // toDo
@@ -54,12 +58,12 @@ namespace ufr_mfp_console
                     while ((!Console.IsInputRedirected)? !Console.KeyAvailable : true)
                     {
                         if (_operationMode == Mode.Read)
-                        switch (_readerType)
+                        switch (_nfcReaderType)
                         {
-                            case ReaderType.uFr:
+                            case NfcReaderType.uFr:
                                 ReadCycle_uFR(ref _card_in_field_uFR);
                                 break;
-                            case ReaderType.RC522:
+                            case NfcReaderType.RC522:
                                 ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522);
                                 break;
                             default:

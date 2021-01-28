@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CCT.Core;
 using CCT.Core.Contracts;
 using CCT.Core.Entities;
 using CCT.Persistence;
@@ -731,6 +732,67 @@ namespace CCT.Persistence.Test
 
                 // Assert
                 Assert.AreEqual(expectedWelcomeText2, welcomeText);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetDefaultNfcReaderType_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                NfcReaderType expectedNfcReaderType = NfcReaderType.uFr;
+
+                // Act
+                NfcReaderType nfcReaderType = await unitOfWork.SettingRepository.GetNfcReaderTypeAsync();
+
+                // Assert
+                Assert.AreEqual(expectedNfcReaderType, nfcReaderType);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_GetNfcReaderType_ShouldReturnCorrectValue()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                NfcReaderType expectedNfcReaderType = NfcReaderType.uFr;
+                await unitOfWork.SettingRepository.SetNfcReaderTypeAsync(expectedNfcReaderType);
+                unitOfWork.SaveChanges();
+
+                // Act
+                NfcReaderType nfcReaderType = await unitOfWork.SettingRepository.GetNfcReaderTypeAsync();
+
+                // Assert
+                Assert.AreEqual(expectedNfcReaderType, nfcReaderType);
+            }
+        }
+
+        [TestMethod]
+        public async Task UnitOfWork_SettingRepository_SetTwoNfcReaderTypes_ShouldReturnSecondNfcReaderType()
+        {
+            string dbName = Guid.NewGuid().ToString();
+
+            using (IUnitOfWork unitOfWork = new UnitOfWork(GetDbContext(dbName)))
+            {
+                // Arrange
+                NfcReaderType expectedNfcReaderType1 = NfcReaderType.uFr;
+                NfcReaderType expectedNfcReaderType2 = NfcReaderType.RC522;
+                await unitOfWork.SettingRepository.SetNfcReaderTypeAsync(expectedNfcReaderType1);
+                unitOfWork.SaveChanges();
+                await unitOfWork.SettingRepository.SetNfcReaderTypeAsync(expectedNfcReaderType2);
+                unitOfWork.SaveChanges();
+
+                // Act
+                NfcReaderType nfcReaderType = await unitOfWork.SettingRepository.GetNfcReaderTypeAsync();
+
+                // Assert
+                Assert.AreEqual(expectedNfcReaderType2, nfcReaderType);
             }
         }
     }

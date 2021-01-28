@@ -1,4 +1,5 @@
-﻿using CCT.Core.Contracts;
+﻿using CCT.Core;
+using CCT.Core.Contracts;
 using CCT.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,7 @@ namespace CCT.Persistence
         const string P01_StorageDuration = "StorageDuration";
         const string P02_Password = "Password";
         const string P03_WelcomeText = "WelcomeText";
+        const string P04_NfcReaderType = "NfcReaderType";
 
         public SettingRepository(ApplicationDbContext dbContext)
         {
@@ -75,6 +77,30 @@ namespace CCT.Persistence
             else
             {
                 return welcomeText.Value;
+            }
+        }
+
+        public async Task<NfcReaderType> GetNfcReaderTypeAsync()
+        {
+            NfcReaderType defaultValue = NfcReaderType.uFr;
+
+            var nfcReaderType = await _dbContext.Settings
+                .SingleOrDefaultAsync(s => s.Name == P04_NfcReaderType);
+
+            if (nfcReaderType == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                try
+                {
+                    return (NfcReaderType)Enum.Parse(typeof(NfcReaderType), nfcReaderType.Value);
+                }
+                catch
+                {
+                    return defaultValue;
+                }
             }
         }
 
@@ -141,6 +167,28 @@ namespace CCT.Persistence
             else
             {
                 welcomeTextInDb.Value = welcomeText;
+            }
+        }
+
+        public async Task SetNfcReaderTypeAsync(NfcReaderType nfcReaderType)
+        {
+            var nfcReaderTypeInDb = await _dbContext.Settings
+                .SingleOrDefaultAsync(s => s.Name == P04_NfcReaderType);
+
+            if (nfcReaderTypeInDb == null)
+            {
+                Setting newSetting = new Setting
+                {
+                    Name = P04_NfcReaderType,
+                    Type = 2,
+                    Value = nfcReaderType.ToString()
+                };
+
+                _dbContext.Add(newSetting);
+            }
+            else
+            {
+                nfcReaderTypeInDb.Value = nfcReaderType.ToString();
             }
         }
     }
