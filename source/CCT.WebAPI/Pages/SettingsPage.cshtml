@@ -14,25 +14,33 @@
         <form method="post">
             <div class="form-group">
                 <label class="control-label">Dauer der Datenaufbewahrung</label>
-                <input autocomplete="off"  asp-for="StorageDuration" class="form-control" />
+                <input autocomplete="off" asp-for="StorageDuration" class="form-control" />
                 <span asp-validation-for="StorageDuration" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Passwort</label>
-                <input autocomplete="off"  asp-for="Password" class="form-control" />
+                <input autocomplete="off" asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Wilkommensnachricht nach Registrierung</label>
-                <input autocomplete="off"  asp-for="WelcomeMessage" class="form-control" />
+                <input autocomplete="off" asp-for="WelcomeMessage" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Verwendeter NFC-Reader</label>
+                <select class="form-control" asp-items="Model.NfcReaderTypes" asp-for="SelectedType">
+                </select>
+
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input type="submit" value="Einstellungen speichern" class="btn btn-default" />
+                <input type="hidden" asp-for="SelectedType" />
+                <input type="hidden" asp-for="NfcReaderTypes" />
             </div>
             @if (Model.LabelTextSuccess != null)
             {
-               <p class="text-success">@Model.LabelTextSuccess</p>
+                <p class="text-success">@Model.LabelTextSuccess</p>
             }
         </form>
     </body>

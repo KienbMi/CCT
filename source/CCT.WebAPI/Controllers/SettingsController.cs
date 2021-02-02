@@ -1,4 +1,5 @@
-﻿using CCT.Core.Contracts;
+﻿using CCT.Core;
+using CCT.Core.Contracts;
 using CCT.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -105,6 +106,35 @@ namespace CCT.WebAPI.Controllers
             var duration = await _unitOfWork.SettingRepository.GetStorageDurationAsync();
 
             return Ok(duration);
+        }
+
+        [HttpGet("reader")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<NfcReaderType>> GetNfcReaderTypes()
+        {
+            var types = await _unitOfWork.SettingRepository.GetNfcReaderTypeAsync();
+
+            return Ok(types);
+        }
+
+        [HttpPost("reader")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostNfcReaderType(NfcReaderType type)
+        {
+            try
+            {
+                await _unitOfWork.SettingRepository.SetNfcReaderTypeAsync(type);
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return CreatedAtAction("PostNfcReaderType", null);
         }
     }
 }

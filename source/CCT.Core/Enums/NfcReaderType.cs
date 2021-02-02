@@ -6,7 +6,7 @@ namespace CCT.Core
 {
     public enum NfcReaderType
     {
-        uFr,
-        RC522
+        uFr = 1,
+        RC522 = 2
     }
 }
