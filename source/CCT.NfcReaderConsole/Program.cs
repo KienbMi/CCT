@@ -71,7 +71,7 @@ namespace ufr_mfp_console
                                 break;
                         }
                       
-                        ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to Delete
+                        //ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to Delete
                         Thread.Sleep(cyleTime);
 
                         // Delete persons older then storage time (default 30 days) from database
