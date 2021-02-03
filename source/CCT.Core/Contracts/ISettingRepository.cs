@@ -13,5 +13,7 @@ namespace CCT.Core.Contracts
         Task<string> GetPasswordAsync();
         Task SetWelcomeTextAsync(string welcomeText);
         Task<string> GetWelcomeTextAsync();
+        Task SetNfcReaderTypeAsync(NfcReaderType nfcReader);
+        Task<NfcReaderType> GetNfcReaderTypeAsync();
     }
 }

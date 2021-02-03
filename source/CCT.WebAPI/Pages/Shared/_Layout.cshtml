@@ -3,18 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CCT.Web</title>
+    <title>@ViewData["Title"] - CCT.edu</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 
-    <environment include="Development">
+    <!--environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
+    </!--environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    </environment-->
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -23,8 +25,8 @@
                 <!---- Shows logo in browser -------------->
                 <a asp-page="/Index" class="navbar-brand" target="_self">
                     <img alt="Bild"
-                         src="~/images/Logo.png"
-                         style="height:25px;width:100px;position:sticky" />
+                            src="~/images/Logo.png"
+                            style="height:25px;width:100px;position:sticky" />
                 </a>
                 <!------------- End of image viewer -------->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -51,11 +53,18 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - CCT.Web
+            <p class="pull-left">&copy; @DateTime.Now.Year - CCT.edu</p>
+            <div class="pull-right">
+                @DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString()
+            </div>
         </div>
     </footer>
 
-    <environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!--environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -74,7 +83,7 @@
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    </environment-->
 
     @RenderSection("Scripts", required: false)
 </body>

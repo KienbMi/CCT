@@ -1,4 +1,5 @@
-﻿using CCT.Core.Entities;
+﻿using CCT.Core;
+using CCT.Core.Entities;
 using CCT.Persistence;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,15 @@ namespace CCT.NfcReaderConsole
                 return storageDuration;
             }
         }
+
+        public static async Task<NfcReaderType> GetNfcReaderTypeFromDbAsync(ApplicationDbContext dbContext = null)
+        {
+            using (UnitOfWork unitOfWork = (dbContext == null) ? new UnitOfWork() : new UnitOfWork(dbContext))
+            {
+                NfcReaderType nfcReaderType = await unitOfWork.SettingRepository.GetNfcReaderTypeAsync();
+                return nfcReaderType;
+            }
+        }
     }
 
     enum Mode
@@ -117,9 +127,4 @@ namespace CCT.NfcReaderConsole
         Write
     };
 
-    enum ReaderType
-    {
-        uFr,
-        RC522
-    };
 }
