@@ -76,7 +76,7 @@ namespace CCT.WebAPI.Pages
 
 			if (cookieValue == null || cookieValue != _pass)
 			{
-				return RedirectToPage("/LoginPage", "Index");
+				return RedirectToPage("/LoginPage", "Settings");
 			}
 			// --------------------------------------------
 			try
