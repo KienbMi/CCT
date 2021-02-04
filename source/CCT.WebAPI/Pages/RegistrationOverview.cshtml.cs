@@ -9,92 +9,117 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CCT.WebAPI.Pages
 {
-    public class RegistrationOverviewModel : PageModel
-    {
-        [BindProperty]
-        public string Date { get; set; }
-        [BindProperty]
-        public string From { get; set; }
-        [BindProperty]
-        public string To { get; set; }
+	public class RegistrationOverviewModel : PageModel
+	{
+		[BindProperty]
+		public string Date { get; set; }
+		[BindProperty]
+		public string From { get; set; }
+		[BindProperty]
+		public string To { get; set; }
 
-        private PersonsClient _pc;
-        private readonly IUnitOfWork _uow;
-        public ICollection<CCT.APIService.Person> PeopleOverview { get; set; }
+		private PersonsClient _pc;
+		private SettingsClient _settingsClient;
+		private readonly IUnitOfWork _uow;
+		public ICollection<CCT.APIService.Person> PeopleOverview { get; set; }
 
-        public RegistrationOverviewModel(IUnitOfWork unitOfWork)
-        {
-            _uow = unitOfWork;
-            _pc = new PersonsClient();
-        }
+		public RegistrationOverviewModel(IUnitOfWork unitOfWork)
+		{
+			_uow = unitOfWork;
+			_pc = new PersonsClient();
+			_settingsClient = new SettingsClient();
+		}
 
-        public async Task<ActionResult> OnGetAsync(string handler)
-        {
-            if (handler == null)
-            {
-                return RedirectToPage("/LoginPage", "Index");
-            }
+		public async Task<ActionResult> OnGetAsync(string handler)
+		{
+			// ------- request cookie ---------------------
+			var cookieValue = Request.Cookies["MyCookieId"];
+			string _pass = await _settingsClient.GetPasswordAsync();
+			// --------------------------------------------
+			if (handler == null || cookieValue == null || cookieValue != _pass)
+			{
+				return RedirectToPage("/LoginPage", "Index");
+			}
 
-            ViewData["Message"] = "Personal Data";
+			ViewData["Message"] = "Personal Data";
 
-            //await PrepareDb();
-            PeopleOverview = await _pc.GetAllPersonsAsync();
+			//await PrepareDb();
+			PeopleOverview = await _pc.GetAllPersonsAsync();
 
-            return Page();
-        }
+			return Page();
+		}
 
-        public async Task<ActionResult> OnPostFilterAsync()
-        {
-            bool isValid = true;
-            DateTime date = DateTime.Today;
-            TimeSpan timeFrom = TimeSpan.Zero;
-            TimeSpan timeTo = TimeSpan.FromDays(1).Subtract(TimeSpan.FromSeconds(1));
+		public async Task<ActionResult> OnPostFilterAsync()
+		{
+			// ------- request cookie ---------------------
+			var cookieValue = Request.Cookies["MyCookieId"];
+			string _pass = await _settingsClient.GetPasswordAsync();
 
-            if (!DateTime.TryParse(Date, out date))
-            {
-                isValid = false;
-                ModelState.AddModelError(nameof(Date), "Bitte gültiges Datumformat eingeben (dd.MM.yyyy)");
-            }
+			if (cookieValue == null || cookieValue != _pass)
+			{
+				return RedirectToPage("/LoginPage", "Index");
+			}
+			// --------------------------------------------
+			bool isValid = true;
+			DateTime date = DateTime.Today;
+			TimeSpan timeFrom = TimeSpan.Zero;
+			TimeSpan timeTo = TimeSpan.FromDays(1).Subtract(TimeSpan.FromSeconds(1));
 
-            if (!String.IsNullOrWhiteSpace(From) && !TimeSpan.TryParse(From, out timeFrom))
-            {
-                isValid = false;
-                ModelState.AddModelError(nameof(From), "Bitte gültiges Zeitformat eingeben (hh:mm)");
-            }
+			if (!DateTime.TryParse(Date, out date))
+			{
+				isValid = false;
+				ModelState.AddModelError(nameof(Date), "Bitte gültiges Datumformat eingeben (dd.MM.yyyy)");
+			}
 
-            if (!String.IsNullOrWhiteSpace(To) && !TimeSpan.TryParse(To, out timeTo))
-            {
-                isValid = false;
-                ModelState.AddModelError(nameof(To), "Bitte gültiges Zeitformat eingeben (hh:mm)");
-            }
+			if (!String.IsNullOrWhiteSpace(From) && !TimeSpan.TryParse(From, out timeFrom))
+			{
+				isValid = false;
+				ModelState.AddModelError(nameof(From), "Bitte gültiges Zeitformat eingeben (hh:mm)");
+			}
 
-            if (!isValid)
-            {
-                PeopleOverview = await _pc.GetAllPersonsAsync();
-                return Page();
-            }
+			if (!String.IsNullOrWhiteSpace(To) && !TimeSpan.TryParse(To, out timeTo))
+			{
+				isValid = false;
+				ModelState.AddModelError(nameof(To), "Bitte gültiges Zeitformat eingeben (hh:mm)");
+			}
 
-            DateTime from = date + timeFrom;
-            DateTime to = date + timeTo;
+			if (!isValid)
+			{
+				PeopleOverview = await _pc.GetAllPersonsAsync();
+				return Page();
+			}
 
-            PeopleOverview = await _pc.GetPersonsForTimespanAsync(from, to);
+			DateTime from = date + timeFrom;
+			DateTime to = date + timeTo;
 
-            return Page();
-        }
+			PeopleOverview = await _pc.GetPersonsForTimespanAsync(from, to);
 
-        public async Task<ActionResult> OnPostDeleteAsync()
-        {
-            PeopleOverview = await _pc.GetAllPersonsAsync();
+			return Page();
+		}
 
-            return Page();
-        }
+		public async Task<ActionResult> OnPostDeleteAsync()
+		{
+			// ------- request cookie ---------------------
+			var cookieValue = Request.Cookies["MyCookieId"];
+			string _pass = await _settingsClient.GetPasswordAsync();
 
-        private async Task PrepareDb()
-        {
-            await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Hannes", LastName = "Berger", PhoneNumber = "0650/8893128", RecordTime = DateTime.Now });
-            await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Peter", LastName = "Auinger", PhoneNumber = "0650/1244418", RecordTime = DateTime.Now });
-            await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Anna", LastName = "Berger", PhoneNumber = "0664/881141283", RecordTime = DateTime.Now });
-            await _uow.SaveChangesAsync();
-        }
-    }
+			if (cookieValue == null || cookieValue != _pass)
+			{
+				return RedirectToPage("/LoginPage", "Index");
+			}
+			// --------------------------------------------
+
+			PeopleOverview = await _pc.GetAllPersonsAsync();
+
+			return Page();
+		}
+
+		private async Task PrepareDb()
+		{
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Hannes", LastName = "Berger", PhoneNumber = "0650/8893128", RecordTime = DateTime.Now });
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Peter", LastName = "Auinger", PhoneNumber = "0650/1244418", RecordTime = DateTime.Now });
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Anna", LastName = "Berger", PhoneNumber = "0664/881141283", RecordTime = DateTime.Now });
+			await _uow.SaveChangesAsync();
+		}
+	}
 }
