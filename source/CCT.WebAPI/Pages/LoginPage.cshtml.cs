@@ -35,7 +35,7 @@ namespace CCT.WebAPI.Pages
 			}
 			catch (Exception)
 			{
-				return RedirectToPage("/LoginPage", "Index");
+				return RedirectToPage("/LoginPage", handler);
 			}
 
 			// --------------------------------------------
