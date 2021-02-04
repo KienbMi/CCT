@@ -48,7 +48,7 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace CCT.WebAPI.Pages
                     ModelState.AddModelError("", ex.Result.Detail);
                 }
             }
-
+            
             return Page();
         }
 
