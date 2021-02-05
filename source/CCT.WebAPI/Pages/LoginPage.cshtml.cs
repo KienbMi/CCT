@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CCT.APIService;
+using CCT.WebAPI.CryptoLib;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,7 +23,10 @@ namespace CCT.WebAPI.Pages
 		public string LabelTextWrongPassword { get; set; }
 
 		[BindProperty]
+		[Required]
+		[DataType(DataType.Password)]
 		public string Password { get; set; }
+
 		public async Task<ActionResult> OnGetAsync(string handler)
 		{
 			LastPage = handler;
@@ -43,7 +48,7 @@ namespace CCT.WebAPI.Pages
 			{
 				return Page();
 			}
-			if(cookieValue == _pass)
+			if (cookieValue == _pass)
 			{
 				if (LastPage == "Index")
 				{
@@ -63,7 +68,7 @@ namespace CCT.WebAPI.Pages
 			_settingClient = new SettingsClient();
 
 			_password = await _settingClient.GetPasswordAsync();
-			
+
 			// ------------- set cookie ----------------------
 			CookieOptions option = new CookieOptions
 			{
@@ -74,8 +79,9 @@ namespace CCT.WebAPI.Pages
 			};
 			Response.Cookies.Append("MyCookieId", $"{_password}", option);
 			// ---- using Microsoft.AspNetCore.Http ----------
-
-			if (Password == _password)
+			// ------ encrypting password ---------
+			string cryptoPass = Encryptor.MD5Hash(Password);
+			if (cryptoPass == _password)
 			{
 				if (LastPage == "Index")
 				{

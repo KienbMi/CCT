@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CCT.APIService;
 using CCT.Core;
+using CCT.WebAPI.CryptoLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -79,9 +80,12 @@ namespace CCT.WebAPI.Pages
 				return RedirectToPage("/LoginPage", "Settings");
 			}
 			// --------------------------------------------
+			// ---------- encrypt password ----------------
+			string cryptoPass = Encryptor.MD5Hash(Password);
+			// --------------------------------------------
 			try
 			{
-				await _settingClient.PostPasswordAsync(Password);
+				await _settingClient.PostPasswordAsync(cryptoPass);
 				await _settingClient.PostStorageDurationAsync(StorageDuration);
 				await _settingClient.PostWelcomeTextAsync(WelcomeMessage);
 				await _settingClient.PostNfcReaderTypeAsync((APIService.NfcReaderType)Enum.Parse(typeof(APIService.NfcReaderType), SelectedType));
