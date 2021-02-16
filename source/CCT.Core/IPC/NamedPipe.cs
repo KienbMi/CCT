@@ -226,21 +226,22 @@ namespace NamedPipe
 
     public class FixedSizedQueue<T>
     {
-        readonly ConcurrentQueue<T> queue = new ConcurrentQueue<T>();
+        readonly ConcurrentQueue<T> queue;
 
         public int Size { get; private set; }
 
         public FixedSizedQueue(int size)
         {
             Size = size;
+            queue = new ConcurrentQueue<T>();
         }
 
         public void Enqueue(T obj)
         {
             // removed because of git
+            
             queue.Enqueue(obj);
             return;
-
             while (queue.Count > Size)
             {
                 T outObj;
