@@ -62,22 +62,22 @@ namespace CCT.Core.Test
             Assert.AreEqual(expectedMessage2, actualMessage2);
         }
 
-        //[TestMethod]
-        //public void T04_SendMessageFromServer_Ok()
-        //{
-        //    // Arrange
-        //    string pipeName = "T04pipe";
-        //    var server = new PipeServer(pipeName: pipeName);
-        //    var client = new PipeClient(pipeName: pipeName);
-        //    string expectedMessage = "Hallo ich bin der Server";
+        [TestMethod]
+        public void T04_SendMessageFromServer_Ok()
+        {
+            // Arrange
+            string pipeName = "T04pipe";
+            var server = new PipeServer(pipeName: pipeName);
+            var client = new PipeClient(pipeName: pipeName);
+            string expectedMessage = "Hallo ich bin der Server";
 
-        //    // Act
-        //    server.SendMessage(expectedMessage);
-        //    string actualMessage = client.ReceiceMessage();
+            // Act
+            server.SendMessage(expectedMessage);
+            string actualMessage = client.ReceiceMessage();
 
-        //    // Assert
-        //    Assert.AreEqual(expectedMessage, actualMessage);
-        //}
+            // Assert
+            Assert.AreEqual(expectedMessage, actualMessage);
+        }
 
         //[TestMethod]
         //public void T05_SendMessageFromServerWithDelay_Ok()
