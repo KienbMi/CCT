@@ -109,17 +109,8 @@ namespace CCT.Core.Test
 
             // Act
             server.SendMessage(expectedMessage1);
-            string actualMessage1 = "", actualMessage2 = null;
-            try
-            {
-                actualMessage1 = client.ReceiceMessage();
-                actualMessage2 = client.ReceiceMessage();
-            }
-            catch
-            {
-                actualMessage2 = "";
-            }
-
+            string actualMessage1 = client.ReceiceMessage();
+            string actualMessage2 = client.ReceiceMessage();
 
             // Assert
             Assert.AreEqual(expectedMessage1, actualMessage1);
