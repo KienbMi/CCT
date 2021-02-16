@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
@@ -182,7 +182,7 @@ namespace NamedPipe
             catch
             {
                 string errorMessage = $"Pipe Client: Connection Timeout";
-                //_errorBuffer.Enqueue(errorMessage);
+                _errorBuffer.Enqueue(errorMessage);
 
                 if (_errorToConsole)
                 {
@@ -209,6 +209,8 @@ namespace NamedPipe
                 catch (Exception ex)
                 {
                     string errorMessage = $"Pipe Client: {ex.Message}";
+                    _errorBuffer.Enqueue(errorMessage);
+
                     if (_errorToConsole)
                     {
                         Console.WriteLine($"Pipe Client: {ex.Message}");
@@ -224,7 +226,7 @@ namespace NamedPipe
 
     public class FixedSizedQueue<T>
     {
-        readonly ConcurrentQueue<T> queue = new ConcurrentQueue<T>();
+        readonly Queue<T> queue = new Queue<T>();
 
         public int Size { get; private set; }
 
