@@ -110,7 +110,6 @@ namespace CCT.Core.Test
             // Act
             server.SendMessage(expectedMessage1);
             string actualMessage1 = client.ReceiceMessage();
-            Task.Delay(1000).Wait();
             string actualMessage2 = client.ReceiceMessage();
 
             // Assert
