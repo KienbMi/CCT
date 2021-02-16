@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
@@ -226,7 +226,7 @@ namespace NamedPipe
 
     public class FixedSizedQueue<T>
     {
-        readonly Queue<T> queue = new Queue<T>();
+        readonly ConcurrentQueue<T> queue = new ConcurrentQueue<T>();
 
         public int Size { get; private set; }
 
