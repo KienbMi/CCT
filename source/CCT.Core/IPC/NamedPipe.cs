@@ -237,11 +237,9 @@ namespace NamedPipe
         }
 
         public void Enqueue(T obj)
-        {
-            // removed because of git
-            
+        {          
             queue.Enqueue(obj);
-            return;
+
             while (queue.Count > Size)
             {
                 T outObj;
