@@ -182,7 +182,7 @@ namespace NamedPipe
             catch
             {
                 string errorMessage = $"Pipe Client: Connection Timeout";
-                _errorBuffer.Enqueue(errorMessage);
+                //_errorBuffer.Enqueue(errorMessage);
 
                 if (_errorToConsole)
                 {
