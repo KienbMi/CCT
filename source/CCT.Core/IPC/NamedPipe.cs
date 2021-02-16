@@ -165,7 +165,7 @@ namespace NamedPipe
         public string ReceiceMessage()
         {
             Start();
-            return _input;
+            return (_input == null) ? "" : _input;
         }
 
 
