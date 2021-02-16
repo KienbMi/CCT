@@ -7,22 +7,22 @@ namespace CCT.Core.Test
     [TestClass]
     public class NamedPipeTest
     {
-        //[TestMethod]
-        //public void T01_SendMessageFromClient_Ok()
-        //{
-        //    // Arrange
-        //    string pipeName = "T01pipe";
-        //    var server = new PipeServer(pipeName: pipeName);
-        //    var client = new PipeClient(pipeName: pipeName);
-        //    string expectedMessage = "Hallo ich bin der Client";
+        [TestMethod]
+        public void T01_SendMessageFromClient_Ok()
+        {
+            // Arrange
+            string pipeName = "T01pipe";
+            var server = new PipeServer(pipeName: pipeName);
+            var client = new PipeClient(pipeName: pipeName);
+            string expectedMessage = "Hallo ich bin der Client";
 
-        //    // Act
-        //    client.SendMessage(expectedMessage);
-        //    string actualMessage = server.ReceiceMessage();
+            // Act
+            client.SendMessage(expectedMessage);
+            string actualMessage = server.ReceiceMessage();
 
-        //    // Assert
-        //    Assert.AreEqual(expectedMessage, actualMessage);
-        //}
+            // Assert
+            Assert.AreEqual(expectedMessage, actualMessage);
+        }
 
         //[TestMethod]
         //public void T02_SendMessageFromClientWithDelay_Ok()
