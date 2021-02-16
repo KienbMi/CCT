@@ -226,7 +226,7 @@ namespace NamedPipe
 
     public class FixedSizedQueue<T>
     {
-        readonly ConcurrentQueue<T> queue;
+        private ConcurrentQueue<T> queue;
 
         public int Size { get; private set; }
 
