@@ -97,24 +97,25 @@ namespace CCT.Core.Test
             Assert.AreEqual(expectedMessage, actualMessage);
         }
 
-        //[TestMethod]
-        //public void T06_SendMessageFromServerAndTwoReads_Ok()
-        //{
-        //    // Arrange
-        //    string pipeName = "T06pipe";
-        //    var server = new PipeServer(pipeName: pipeName);
-        //    var client = new PipeClient(pipeName: pipeName);
-        //    string expectedMessage1 = "Hallo ich bin der Server";
-        //    string expectedMessage2 = "";
+        [TestMethod]
+        public void T06_SendMessageFromServerAndTwoReads_Ok()
+        {
+            // Arrange
+            string pipeName = "T06pipe";
+            var server = new PipeServer(pipeName: pipeName);
+            var client = new PipeClient(pipeName: pipeName);
+            string expectedMessage1 = "Hallo ich bin der Server";
+            string expectedMessage2 = "";
 
-        //    // Act
-        //    server.SendMessage(expectedMessage1);
-        //    string actualMessage1 = client.ReceiceMessage();
-        //    string actualMessage2 = client.ReceiceMessage();
+            // Act
+            server.SendMessage(expectedMessage1);
+            string actualMessage1 = client.ReceiceMessage();
+            Task.Delay(1000).Wait();
+            string actualMessage2 = client.ReceiceMessage();
 
-        //    // Assert
-        //    Assert.AreEqual(expectedMessage1, actualMessage1);
-        //    Assert.AreEqual(expectedMessage2, actualMessage2);
-        //}
+            // Assert
+            Assert.AreEqual(expectedMessage1, actualMessage1);
+            Assert.AreEqual(expectedMessage2, actualMessage2);
+        }
     }
 }
