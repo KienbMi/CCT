@@ -237,7 +237,9 @@ namespace NamedPipe
         }
 
         public void Enqueue(T obj)
-        {          
+        {
+            // not working on git
+            return;
             queue.Enqueue(obj);
 
             while (queue.Count > Size)
