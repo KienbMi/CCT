@@ -12,7 +12,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T01pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage = "Hallo ich bin der Client";
 
@@ -29,7 +29,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T02pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage = "Hallo ich bin der Client";
 
@@ -47,7 +47,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T03pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage1 = "Hallo ich bin der Client";
             string expectedMessage2 = "";
@@ -67,7 +67,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T04pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage = "Hallo ich bin der Server";
 
@@ -84,7 +84,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T05pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage = "Hallo ich bin der Server";
 
@@ -102,7 +102,7 @@ namespace CCT.Core.Test
         {
             // Arrange
             string pipeName = "T06pipe";
-            var server = new PipeServer(pipeName: pipeName);
+            var server = new PipeServer(pipeName: pipeName, autoRun: true);
             var client = new PipeClient(pipeName: pipeName);
             string expectedMessage1 = "Hallo ich bin der Server";
             string expectedMessage2 = "";

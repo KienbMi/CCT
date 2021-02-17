@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using FixedSizedQueue;
+using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
@@ -39,9 +39,12 @@ namespace NamedPipe
         CancellationTokenSource _tokenSource;
         CancellationToken _ct;
 
-        public PipeServer(bool errorToConsole = false, string pipeName = null) : base(errorToConsole, pipeName)
+        public PipeServer(bool errorToConsole = false, string pipeName = null, bool autoRun = false) : base(errorToConsole, pipeName)
         {
-            Start();
+            if (autoRun)
+                Start();
+            else
+                Update();
         }
 
         public void SendMessage(string message)
@@ -78,6 +81,40 @@ namespace NamedPipe
             }
         }
 
+        private void Update()
+        {
+            if (_server != null && _server.IsConnected)
+            {
+                try
+                {
+                    _input = _reader.ReadLine();
+                    if (!string.IsNullOrEmpty(_input))
+                    {
+                        _receivedMessage = _input;
+                    }
+
+                    _writer.WriteLine(_output);
+                    _writer.Flush();
+                    _output = "";
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Pipe Server error: {ex.Message}";
+                    _errorBuffer.Enqueue(errorMessage);
+
+                    if (_errorToConsole)
+                    {
+                        Console.WriteLine(errorMessage);
+                    }
+                }
+            }
+            else
+            {
+                InitServer();
+            }
+        }
+
+
         private void Start()
         {
             _tokenSource = new CancellationTokenSource();
@@ -92,35 +129,7 @@ namespace NamedPipe
 
                 while (true)
                 {
-                    if (_server.IsConnected)
-                    {
-                        try
-                        {
-                            _input = _reader.ReadLine();
-                            if (!string.IsNullOrEmpty(_input))
-                            {
-                                _receivedMessage = _input;
-                            }
-
-                            _writer.WriteLine(_output);
-                            _writer.Flush();
-                            _output = "";
-                        }
-                        catch (Exception ex)
-                        {
-                            string errorMessage = $"Pipe Server error: {ex.Message}";
-                            _errorBuffer.Enqueue(errorMessage);
-
-                            if (_errorToConsole)
-                            {
-                                Console.WriteLine(errorMessage);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        InitServer();
-                    }
+                    Update();
 
                     // Poll on this property if you have to do
                     // other cleanup before throwing.
@@ -131,6 +140,7 @@ namespace NamedPipe
                         _ct.ThrowIfCancellationRequested();
                     }
 
+                    Task.Delay(200).Wait();
                 }
             }, _tokenSource.Token);
         }
@@ -220,31 +230,6 @@ namespace NamedPipe
 
             _client.Close();
             _client.Dispose();
-        }
-    }
-
-
-    public class FixedSizedQueue<T>
-    {
-        private ConcurrentQueue<T> queue;
-
-        public int Size { get; private set; }
-
-        public FixedSizedQueue(int size)
-        {
-            Size = size;
-            queue = new ConcurrentQueue<T>();
-        }
-
-        public void Enqueue(T obj)
-        {
-            queue.Enqueue(obj);
-
-            while (queue.Count > Size)
-            {
-                T outObj;
-                queue.TryDequeue(out outObj);
-            }
         }
     }
 }
