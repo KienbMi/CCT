@@ -39,7 +39,7 @@ namespace NamedPipe
         CancellationTokenSource _tokenSource;
         CancellationToken _ct;
 
-        public PipeServer(bool errorToConsole = false, string pipeName = null, bool autoRun = false) : base(errorToConsole, pipeName)
+        public PipeServer(bool errorToConsole = true, string pipeName = null, bool autoRun = true) : base(errorToConsole, pipeName)
         {
             if (autoRun)
                 Start();

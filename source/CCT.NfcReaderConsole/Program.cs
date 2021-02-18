@@ -1,6 +1,7 @@
 ﻿using CCT.Core;
 using CCT.Core.Entities;
 using CCT.NfcReaderConsole;
+using NamedPipe;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +37,9 @@ namespace ufr_mfp_console
                 // Start NFC-Reader programm
                 Functions_uFR.headline();
 
+                // Start PipeServer
+                var pipeServer = new PipeServer(autoRun: true);
+
                 // Init Reader
                 switch (_nfcReaderType)
                 {
@@ -57,21 +61,56 @@ namespace ufr_mfp_console
                 {
                     while ((!Console.IsInputRedirected)? !Console.KeyAvailable : true)
                     {
-                        if (_operationMode == Mode.Read)
-                        switch (_nfcReaderType)
+                        // Get message from Web - Application
+                        string message = pipeServer.ReceiceMessage();
+                        string nfcNewDataContent = string.Empty;
+
+                        switch (message)
                         {
-                            case NfcReaderType.uFr:
-                                ReadCycle_uFR(ref _card_in_field_uFR);
+                            case "ModeRead":
+                                _operationMode = Mode.Read;
                                 break;
-                            case NfcReaderType.RC522:
-                                ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522);
+                            case "ModeWrite":
+                                _operationMode = Mode.Write;
                                 break;
                             default:
-                                Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
+                                nfcNewDataContent = message;
                                 break;
                         }
+
+                        //nfcNewDataContent = "Max;Mustermann;07742311;1;"; // toDelete
+
+                        if (_operationMode == Mode.Read)
+                        {
+                            switch (_nfcReaderType)
+                            {
+                                case NfcReaderType.uFr:
+                                    ReadCycle_uFR(ref _card_in_field_uFR);
+                                    break;
+                                case NfcReaderType.RC522:
+                                    ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522);
+                                    break;
+                                default:
+                                    Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
+                                    break;
+                            }
+                        }
+                        else if (_operationMode == Mode.Write)
+                        {
+                            switch (_nfcReaderType)
+                            {
+                                case NfcReaderType.uFr:
+                                    WriteCycle_uFR(nfcNewDataContent);
+                                    break;
+                                case NfcReaderType.RC522:
+                                    WriteCycle_RC522(nfcNewDataContent);
+                                    break;
+                                default:
+                                    Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
+                                    break;
+                            }
+                        }
                       
-                        //ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to Delete
                         Thread.Sleep(cyleTime);
 
                         // Delete persons older then storage time (default 30 days) from database
@@ -171,6 +210,53 @@ namespace ufr_mfp_console
             }
         }
 
+        /// <summary>
+        /// Write data into Nfc Tag
+        /// </summary>
+        static void WriteCycle_uFR(string nfcNewDataContent)
+        {
+            //signaling
+            const byte FRES_OK_LIGHT = 0x01,    // long green
+                       FERR_LIGHT = 0x02,       // long red
+                       FRES_OK_SOUND = 0x01,    // short
+                       FERR_SOUND = 0x00;       // none
+
+            uFR.DL_STATUS dl_status;
+
+            bool signalingOn = false;
+            if (!string.IsNullOrEmpty(nfcNewDataContent))
+            {
+                (dl_status) = Functions_uFR.WriteLinear(nfcNewDataContent);
+                signalingOn = true;
+            }
+            else
+            {
+                (dl_status, _) = Functions_uFR.ReadLinear();
+            }
+
+            switch (dl_status)
+            {
+                case uFR.DL_STATUS.UFR_FT_STATUS_ERROR_2:
+                case uFR.DL_STATUS.UFR_FT_STATUS_ERROR_5:
+                    Functions_uFR.reader_automaticOpen();
+                    break;
+
+                case uFR.DL_STATUS.UFR_OK:
+                    if (signalingOn)
+                    {
+                        uFCoder.ReaderUISignal(FRES_OK_LIGHT, FRES_OK_SOUND);
+                    }
+                    break;
+
+                default:
+                    if (signalingOn)
+                    {
+                        uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                    }
+                    break;
+            }
+        }
+
         static void ReadCycle_RC522(string actEnvironment, ref bool card_in_field)
         {
             if (actEnvironment == null || actEnvironment.StartsWith("RPI") == false)
@@ -213,6 +299,11 @@ namespace ufr_mfp_console
             }
 
             Thread.Sleep(500);
+        }
+
+        private static void WriteCycle_RC522(string nfcNewDataContent)
+        {
+            throw new NotImplementedException();
         }
     }
 }
