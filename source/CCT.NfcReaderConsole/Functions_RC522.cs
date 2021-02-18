@@ -68,7 +68,7 @@ namespace CCT.NfcReaderConsole
                         if (_nfcReader.AuthenticateCard1A(cardUid, 7) == RFIDControllerMfrc522.Status.AllOk)
                         {
                             // Read data from sectors
-                            byte blockAdress = 0;
+                            byte blockAdress = 4;
                             var nfcResponse = _nfcReader.CardReadData(blockAdress);
 
                             result = System.Text.Encoding.Default.GetString(nfcResponse.Data);
