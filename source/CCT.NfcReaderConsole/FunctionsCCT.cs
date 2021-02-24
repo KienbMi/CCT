@@ -30,6 +30,7 @@ namespace CCT.NfcReaderConsole
             const int IDX_FIRSTNAME = 0;
             const int IDX_LASTNAME = 1;
             const int IDX_PHONENUMBER = 2;
+            const int IDX_VACCINATION = 3;
 
             Person person = new Person
             {
@@ -38,6 +39,11 @@ namespace CCT.NfcReaderConsole
                 PhoneNumber = data[IDX_PHONENUMBER],
                 RecordTime = DateTime.Now
             };
+
+            if (data.Length > IDX_VACCINATION + 1 && data[IDX_VACCINATION] == "1")
+            {
+                person.IsVaccinated = true;
+            }
 
             return person;
         }

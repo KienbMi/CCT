@@ -212,6 +212,25 @@ namespace ufr_mfp_console
             }
         }
 
+        public static uFR.DL_STATUS WriteLinear(string nfcNewDataContent)
+        {
+            //authenticate
+            const byte MIFARE_AUTHENT1A = 0x60;
+
+            //parameter
+            ushort ushLinearAddress = 0;
+            ushort ushDataLength = 100;
+            byte[] baWriteData = new byte[ushDataLength];
+            ushort ushBytesRet = 0;
+            byte bAuthMode = MIFARE_AUTHENT1A;
+            byte bKeyIndex = 0;
+
+            baWriteData = Encoding.ASCII.GetBytes(nfcNewDataContent);
+
+            var dL_STATUS = uFCoder.LinearWrite(baWriteData, ushLinearAddress, ushDataLength, out ushBytesRet, bAuthMode, bKeyIndex);
+            return dL_STATUS;
+        }
+
         public static (uFR.DL_STATUS,string) ReadLinear()
         {
             //authenticate
