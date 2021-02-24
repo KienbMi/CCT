@@ -67,10 +67,10 @@ namespace ufr_mfp_console
 
                         switch (message)
                         {
-                            case "ModeRead":
+                            case "SetReadMode":
                                 _operationMode = Mode.Read;
                                 break;
-                            case "ModeWrite":
+                            case "SetWriteMode":
                                 _operationMode = Mode.Write;
                                 break;
                             default:
