@@ -81,8 +81,6 @@ namespace ufr_mfp_console
                                 break;
                         }
 
-                        //nfcNewDataContent = "Max;Mustermann;07742311;1;"; // toDelete
-
                         if (_operationMode == Mode.Read)
                         {
                             switch (_nfcReaderType)
@@ -113,7 +111,9 @@ namespace ufr_mfp_console
                                     break;
                             }
                         }
-                      
+
+                        ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to delete
+
                         Thread.Sleep(cyleTime);
 
                         // Delete persons older then storage time (default 30 days) from database
@@ -221,6 +221,8 @@ namespace ufr_mfp_console
             //signaling
             const byte FRES_OK_LIGHT = 0x01,    // long green
                        FERR_LIGHT = 0x02,       // long red
+                       ALT_LIGHT = 0x03,        // alternation
+                       FLASH_LIGHT = 0x04,      // flash
                        FRES_OK_SOUND = 0x01,    // short
                        FERR_SOUND = 0x00;       // none
 
@@ -255,6 +257,10 @@ namespace ufr_mfp_console
                     if (signalingOn)
                     {
                         uFCoder.ReaderUISignal(FERR_LIGHT, FERR_SOUND);
+                    }
+                    else
+                    {
+                        uFCoder.ReaderUISignal(ALT_LIGHT, FERR_SOUND);
                     }
                     break;
             }

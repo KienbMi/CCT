@@ -104,7 +104,7 @@ namespace CCT.WebAPI.Pages
 
         public IActionResult OnPostReset()
         {
-            return RedirectToPage("RegistrationPage");
+            return RedirectToPage("/WriteTagPage");
         }
     }
 }

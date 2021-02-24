@@ -14,9 +14,9 @@
     <form method="post">
 
         <div class="form-group">
-            <input asp-page-handler="Write" type="submit" value="NFC-Reader schreiben" class="btn btn-default" />
+            <input asp-page-handler="Write" type="submit" value="Schreibmodus" class="btn btn-default" />
 
-            <input asp-page-handler="Read" type="submit" value="NFC-Reader lesen" class="btn btn-default" />
+            <input asp-page-handler="Read" type="submit" value="Lesemodus" class="btn btn-default" />
         </div>
         <div class="form-group">
             <label class="control-label">Vorname</label>
@@ -42,7 +42,7 @@
         }
 
         <div class="form-group">
-            <input type="submit" value="Tag beschreiben" class="btn btn-default" />
+            <input asp-page-handler="" type="submit" value="Tag beschreiben" class="btn btn-default" />
 
             <input asp-page-handler="Reset" type="submit" value="Löschen" class="btn btn-secondary" />
         </div>
