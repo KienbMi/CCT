@@ -74,7 +74,10 @@ namespace ufr_mfp_console
                                 _operationMode = Mode.Write;
                                 break;
                             default:
-                                nfcNewDataContent = message;
+                                if(!string.IsNullOrEmpty(message))
+                                {
+                                    nfcNewDataContent = message;
+                                }
                                 break;
                         }
 

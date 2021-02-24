@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model CCT.WebAPI.Pages.WriteTagPageModel
 @{
 }
@@ -12,35 +12,39 @@
     <h1>NFC-Tag beschreiben</h1>
 
     <form method="post">
+
+        <div class="form-group">
+            <input asp-page-handler="Write" type="submit" value="NFC-Reader schreiben" class="btn btn-default" />
+
+            <input asp-page-handler="Read" type="submit" value="NFC-Reader lesen" class="btn btn-default" />
+        </div>
         <div class="form-group">
             <label class="control-label">Vorname</label>
             <input autocomplete="off" asp-for="FirstName" class="form-control" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label class="control-label">Nachname</label>
             <input autocomplete="off" asp-for="LastName" class="form-control" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label class="control-label">Telefonnummer</label>
             <input autocomplete="off" asp-for="PhoneNumber" class="form-control" />
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label class="control-label">Geimpft: </label>
             @Html.CheckBoxFor(model => model.IsVaccinated)
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div>
+                <label class="text-danger">@Model.ErrorMessage</label>
+            </div>
+        }
+
         <div class="form-group">
             <input type="submit" value="Tag beschreiben" class="btn btn-default" />
 
             <input asp-page-handler="Reset" type="submit" value="Löschen" class="btn btn-secondary" />
-        </div>
-        <div class="form-group">
-            <input asp-page-handler="Write" type="submit" value="NFC-Reader auf schreiben umstellen" class="btn btn-default" />
-
-            <input asp-page-handler="Read" type="submit" value="NFC-Reader auf lesen umstellen" class="btn btn-default" />
         </div>
 
 

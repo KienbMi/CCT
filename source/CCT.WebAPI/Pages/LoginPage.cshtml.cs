@@ -85,6 +85,10 @@ namespace CCT.WebAPI.Pages
 				{
 					return RedirectToPage("/SettingsPage", handler);
 				}
+				else if (LastPage == "WriteTag")
+				{
+					return RedirectToPage("/WriteTagPage", handler);
+				}
 			}
 
 			LabelTextWrongPassword = "Passwort ist falsch!";

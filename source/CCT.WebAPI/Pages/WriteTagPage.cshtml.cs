@@ -31,6 +31,8 @@ namespace CCT.WebAPI.Pages
         public string PhoneNumber { get; set; }
         [BindProperty]
         public bool IsVaccinated { get; set; }
+        [BindProperty]
+        public string ErrorMessage { get; set; }
 
         public WriteTagPageModel(IUnitOfWork unitOfWork)
         {
@@ -39,13 +41,27 @@ namespace CCT.WebAPI.Pages
             _pipeClient = new PipeClient();
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string handler)
         {
+            var cookieValue = Request.Cookies["MyCookieId"];
+            string _pass = await _sc.GetPasswordAsync();
+
+            if (cookieValue == null || cookieValue != _pass)
+            {
+                return RedirectToPage("/LoginPage", "WriteTag");
+            }
+
+            return Page();
         }
 
         public async Task<ActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(PhoneNumber))
+            {
+                ErrorMessage = "Alle Felder müssen ausgefüllt sein!";
+                ModelState.AddModelError("", "Alle Felder müssen ausgefüllt sein!");
+            }
+            else
             {
                 try
                 {
@@ -60,7 +76,7 @@ namespace CCT.WebAPI.Pages
 
                     int isVaccinated = newPerson.IsVaccinated ? 1 : 0;
 
-                    string nfcFormattedString = $"{FirstName};{LastName};{PhoneNumber};{newPerson.RecordTime};{isVaccinated};";
+                    string nfcFormattedString = $"{FirstName};{LastName};{PhoneNumber};{isVaccinated};";
 
                     _pipeClient.SendMessage(nfcFormattedString);
 
@@ -77,13 +93,13 @@ namespace CCT.WebAPI.Pages
         public IActionResult OnPostWrite()
         {
             _pipeClient.SendMessage("SetWriteMode");
-            return Page();
+            return RedirectToPage("/WriteTagPage", "Write");
         }
 
         public IActionResult OnPostRead()
         {
             _pipeClient.SendMessage("SetReadMode");
-            return Page();
+            return RedirectToPage("/WriteTagPage", "Read");
         }
 
         public IActionResult OnPostReset()
