@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CCT.APIService;
 using CCT.Core.Contracts;
+using CCT.WebAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -45,6 +46,11 @@ namespace CCT.WebAPI.Pages
 
 			//await PrepareDb();
 			PeopleOverview = await _pc.GetAllPersonsAsync();
+
+			foreach (var person in PeopleOverview)
+			{
+				person.PhoneNumber = PhoneNumberFormatter.FormatPhoneNumber(person.PhoneNumber);
+			}
 
 			return Page();
 		}
@@ -94,6 +100,11 @@ namespace CCT.WebAPI.Pages
 
 			PeopleOverview = await _pc.GetPersonsForTimespanAsync(from, to);
 
+            foreach (var person in PeopleOverview)
+            {
+				person.PhoneNumber = PhoneNumberFormatter.FormatPhoneNumber(person.PhoneNumber);
+            }
+
 			return Page();
 		}
 
@@ -116,9 +127,9 @@ namespace CCT.WebAPI.Pages
 
 		private async Task PrepareDb()
 		{
-			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Hannes", LastName = "Berger", PhoneNumber = "0650/8893128", RecordTime = DateTime.Now });
-			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Peter", LastName = "Auinger", PhoneNumber = "0650/1244418", RecordTime = DateTime.Now });
-			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Anna", LastName = "Berger", PhoneNumber = "0664/881141283", RecordTime = DateTime.Now });
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Hannes", LastName = "Berger", PhoneNumber = "06508893128", RecordTime = DateTime.Now });
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Peter", LastName = "Auinger", PhoneNumber = "06501244418", RecordTime = DateTime.Now });
+			await _uow.PersonRepository.AddPersonAsync(new CCT.Core.Entities.Person { FirstName = "Anna", LastName = "Berger", PhoneNumber = "0664881141283", RecordTime = DateTime.Now });
 			await _uow.SaveChangesAsync();
 		}
 	}
