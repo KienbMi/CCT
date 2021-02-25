@@ -14,7 +14,8 @@ namespace ufr_mfp_console
         static async Task<int> Main(string[] args)
         {
             string _actEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            bool _card_in_field_uFR = false, _card_in_field_RC522 = false;
+            bool _card_in_field_uFR = false; 
+            int _card_in_field_RC522 = 0;
             DateTime _dateOld = DateTime.Now;
             int cyleTime = 300; // milliseconds
             char c;
@@ -266,20 +267,19 @@ namespace ufr_mfp_console
             }
         }
 
-        static void ReadCycle_RC522(string actEnvironment, ref bool card_in_field)
+        static void ReadCycle_RC522(string actEnvironment, ref int card_in_field)
         {
             if (actEnvironment == null || actEnvironment.StartsWith("RPI") == false)
                 return;
 
             Functions_RC522.InvertLedSignal();
 
-            string nfcDataContent = Functions_RC522.ReadTagFromRC522();
+            (bool cardDetected, string nfcDataContent) = Functions_RC522.ReadTagFromRC522();
 
             // data from reader received ?
-            if (string.IsNullOrEmpty(nfcDataContent) == false && card_in_field == false)
+            if (string.IsNullOrEmpty(nfcDataContent) == false && card_in_field == 0)
             {
-                card_in_field = true;
-                Console.WriteLine(nfcDataContent);
+                card_in_field = 2;
                 Person person = FunctionsCCT.ParseNfcDataToPerson(nfcDataContent);
 
                 if (person != null)
@@ -302,12 +302,17 @@ namespace ufr_mfp_console
                     }
                 }
             }
-            else
+            else if (card_in_field > 0)
             {
-                card_in_field = false;
+                if (cardDetected)
+                    card_in_field = 2;
+                else
+                    card_in_field--;
             }
-
-            Thread.Sleep(500);
+            else 
+            {
+                card_in_field = 0;
+            }
         }
 
         private static void WriteCycle_RC522(string nfcNewDataContent)

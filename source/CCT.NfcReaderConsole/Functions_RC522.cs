@@ -48,14 +48,15 @@ namespace CCT.NfcReaderConsole
             }
         }
 
-        public static string ReadTagFromRC522()
+        public static (bool,string) ReadTagFromRC522()
         {
             if (_initDone == false)
                 Init();
 
             string result = string.Empty;
+            bool cardDetected = _nfcReader.DetectCard() == RFIDControllerMfrc522.Status.AllOk;
 
-            if (_nfcReader.DetectCard() == RFIDControllerMfrc522.Status.AllOk)
+            if (cardDetected)
             {
                 var uidResponse = _nfcReader.ReadCardUniqueId();
                 if (uidResponse.Status == RFIDControllerMfrc522.Status.AllOk)
@@ -65,13 +66,21 @@ namespace CCT.NfcReaderConsole
 
                     try
                     {
-                        if (_nfcReader.AuthenticateCard1A(cardUid, 7) == RFIDControllerMfrc522.Status.AllOk)
+                        if (true || _nfcReader.AuthenticateCard1A(cardUid, 7) == RFIDControllerMfrc522.Status.AllOk)
                         {
                             // Read data from sectors
                             byte blockAdress = 4;
-                            var nfcResponse = _nfcReader.CardReadData(blockAdress);
 
-                            result = System.Text.Encoding.Default.GetString(nfcResponse.Data);
+                            for (int i = 0; i < 7; i++)    // 7 * 16 bytes = 112
+                            {
+                                var nfcResponse = _nfcReader.CardReadData(blockAdress);
+                                result = result + System.Text.Encoding.Default.GetString(nfcResponse.Data);
+                                blockAdress += 4;
+                            }                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Authentication error");
                         }
                     }
                     finally
@@ -80,7 +89,7 @@ namespace CCT.NfcReaderConsole
                     }
                 }
             }
-            return result;
+            return (cardDetected, result);
         }
 
         public static void ResetSignals()
