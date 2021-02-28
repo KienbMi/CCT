@@ -105,7 +105,7 @@ namespace ufr_mfp_console
                                     WriteCycle_uFR(nfcNewDataContent);
                                     break;
                                 case NfcReaderType.RC522:
-                                    WriteCycle_RC522(nfcNewDataContent);
+                                    WriteCycle_RC522(_actEnvironment, nfcNewDataContent);
                                     break;
                                 default:
                                     Console.WriteLine("Kein gültiger NFC-Readertyp angewählt");
@@ -113,7 +113,7 @@ namespace ufr_mfp_console
                             }
                         }
 
-                        ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to delete
+                        //ReadCycle_RC522(_actEnvironment, ref _card_in_field_RC522); // to delete
 
                         Thread.Sleep(cyleTime);
 
@@ -298,7 +298,7 @@ namespace ufr_mfp_console
                     Console.WriteLine(nfcDataContent);
                     if (dbSaveOk)
                     {
-                        // Signal ok;
+                        Functions_RC522.BeepSignal();
                     }
                 }
             }
@@ -315,9 +315,22 @@ namespace ufr_mfp_console
             }
         }
 
-        private static void WriteCycle_RC522(string nfcNewDataContent)
+        private static void WriteCycle_RC522(string actEnvironment, string nfcNewDataContent)
         {
-            throw new NotImplementedException();
+            if (actEnvironment == null || actEnvironment.StartsWith("RPI") == false)
+                return;
+
+            Functions_RC522.InvertLedSignal();
+
+            if (!string.IsNullOrEmpty(nfcNewDataContent))
+            {
+                bool done = Functions_RC522.WriteTagRC522(nfcNewDataContent);
+                
+                if(done)
+                {
+                    Functions_RC522.BeepSignal();
+                }
+            }
         }
     }
 }
