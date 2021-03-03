@@ -34,12 +34,24 @@ namespace CCT.WebAPI.Pages
         public string PhoneNumber { get; set; }
         [BindProperty]
         public bool IsVaccinated { get; set; }
+        [BindProperty]
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime LastTestedDate { get; set; }
+
+        [BindProperty]
+        [Required]
+        [DataType(DataType.Time)]
+        public TimeSpan LastTestedTime { get; set; }
 
         public RegistrationPageModel(IUnitOfWork unitOfWork)
         {
             _uow = unitOfWork;
             _pc = new PersonsClient();
             _sc = new SettingsClient();
+            LastTestedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            LastTestedTime = new TimeSpan(DateTime.Now.TimeOfDay.Ticks);
         }
 
         public async Task OnGetAsync()
@@ -52,13 +64,15 @@ namespace CCT.WebAPI.Pages
             {
                 try
                 {
+                    var lastTested = LastTestedDate + LastTestedTime;
                     var newPerson = new PersonDto
                     {
                         FirstName = FirstName,
                         LastName = LastName,
                         PhoneNumber = PhoneNumber,
                         RecordTime = DateTime.Now,
-                        IsVaccinated = IsVaccinated
+                        IsVaccinated = IsVaccinated,
+                        LastTested = lastTested
                     };
 
                     await _pc.PostPersonAsync(newPerson);

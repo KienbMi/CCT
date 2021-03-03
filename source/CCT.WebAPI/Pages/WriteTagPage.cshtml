@@ -31,6 +31,20 @@
             <input autocomplete="off" asp-for="PhoneNumber" class="form-control" />
         </div>
         <div class="form-group">
+            <div>
+                <label class="control-label">Letzte Testung</label>
+            </div>
+
+            <div style="float:left">
+                <input type="date" asp-for="@Model.LastTestedDate" class="form-control" />
+            </div>
+            <div style="float:left">
+                <input type="time" asp-for="@Model.LastTestedTime" class="form-control" />
+            </div>
+        </div>
+
+        <br style="clear: both;">
+        <div class="form-group">
             <label class="control-label">Geimpft: </label>
             @Html.CheckBoxFor(model => model.IsVaccinated)
         </div>

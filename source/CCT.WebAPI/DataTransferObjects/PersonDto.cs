@@ -22,5 +22,6 @@ namespace CCT.WebAPI.DataTransferObjects
         public DateTime RecordTime { get; set; }
         [DisplayName("Ist geimpft")]
         public bool IsVaccinated { get; set; }
+        public DateTime LastTested { get; set; }
     }
 }

@@ -154,7 +154,8 @@ namespace CCT.WebAPI.Controllers
                     LastName = personDto.LastName,
                     PhoneNumber = cleanedNumber,
                     RecordTime = DateTime.Now,
-                    IsVaccinated = personDto.IsVaccinated
+                    IsVaccinated = personDto.IsVaccinated,
+                    LastTested = personDto.LastTested
                 });
 
                 await _unitOfWork.SaveChangesAsync();

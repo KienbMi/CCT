@@ -33,6 +33,16 @@ namespace CCT.WebAPI.Pages
         public bool IsVaccinated { get; set; }
         [BindProperty]
         public string ErrorMessage { get; set; }
+        [BindProperty]
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime LastTestedDate { get; set; }
+
+        [BindProperty]
+        [Required]
+        [DataType(DataType.Time)]
+        public TimeSpan LastTestedTime { get; set; }
 
         public WriteTagPageModel(IUnitOfWork unitOfWork)
         {
@@ -65,18 +75,20 @@ namespace CCT.WebAPI.Pages
             {
                 try
                 {
+                    var lastTested = LastTestedDate + LastTestedTime;
                     var newPerson = new PersonDto
                     {
                         FirstName = FirstName,
                         LastName = LastName,
                         PhoneNumber = PhoneNumber,
                         RecordTime = DateTime.Now,
-                        IsVaccinated = IsVaccinated
+                        IsVaccinated = IsVaccinated,
+                        LastTested = lastTested
                     };
 
                     int isVaccinated = newPerson.IsVaccinated ? 1 : 0;
 
-                    string nfcFormattedString = $"{FirstName};{LastName};{PhoneNumber};{isVaccinated};";
+                    string nfcFormattedString = $"{FirstName};{LastName};{PhoneNumber};{isVaccinated};{lastTested};";
 
                     _pipeClient.SendMessage(nfcFormattedString);
 

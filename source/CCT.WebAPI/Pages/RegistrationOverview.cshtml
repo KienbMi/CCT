@@ -50,6 +50,9 @@
                         <label>Telefonnummer</label>
                     </th>
                     <th>
+                        <label>Zuletzt getestet vor</label>
+                    </th>
+                    <th>
                         <label>Registrationsdatum</label>
                     </th>
                     <th>
@@ -73,7 +76,10 @@
                         @Html.DisplayFor(_ => item.PhoneNumber)
                     </td>
                     <td>
-                        @Html.DisplayFor(_ => item.RecordTime.DateTime)
+                        @Html.DisplayFor(_ => item.LastTestedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.RecordTime)
                     </td>
                     <td>
                         @Html.DisplayFor(_ => item.IsVaccinated)
