@@ -17,6 +17,7 @@ namespace CCT.NfcReaderConsole
         static IGpioPin _blinkingPin;
         static IGpioPin _pulsePin;
         static RFIDControllerMfrc522 _nfcReader;
+        static bool _authOn = true;
 
         public static void Init()
         {
@@ -57,18 +58,22 @@ namespace CCT.NfcReaderConsole
 
         public static void BeepSignal()
         {
+            if (_initDone == false)
+                Init();
+
             _pulsePin.Write(true);
             Thread.Sleep(300);
             _pulsePin.Write(false);
         }
 
-        public static (bool, string) ReadTagFromRC522()
+        public static (bool, bool, string) ReadTagFromRC522()
         {
             if (_initDone == false)
                 Init();
 
             string result = string.Empty;
             bool cardDetected = _nfcReader.DetectCard() == RFIDControllerMfrc522.Status.AllOk;
+            bool readDone = false;
 
             if (cardDetected)
             {
@@ -76,26 +81,42 @@ namespace CCT.NfcReaderConsole
                 if (uidResponse.Status == RFIDControllerMfrc522.Status.AllOk)
                 {
                     var cardUid = uidResponse.Data;
-                    PrintUid(cardUid, uidResponse.DataBitLength);
+                    //PrintUid(cardUid, uidResponse.DataBitLength);
                     _nfcReader.SelectCardUniqueId(cardUid);
+                    int byteBlocksToRead = 7; // 7 * 16 bytes = 112 bytes
+                    int byteBlocksRead = 0;
 
                     try
                     {
-                        bool authOn = false;
-
                         // Read data from sectors
                         byte blockAdress = 4;
 
-                        for (int i = 0; i < 7; i++)    // 7 * 16 bytes = 112
+                        for (int i = 0; i < byteBlocksToRead; i++)
                         {
-                            if (authOn && _nfcReader.AuthenticateCard1A(RFIDControllerMfrc522.DefaultAuthKey, cardUid, (byte)(blockAdress + 3)) != RFIDControllerMfrc522.Status.AllOk)
+                            if (_authOn && _nfcReader.AuthenticateCard1A(RFIDControllerMfrc522.DefaultAuthKey, cardUid, (byte)(blockAdress + 3)) != RFIDControllerMfrc522.Status.AllOk)
                             {
-                                Console.WriteLine("Authentication error");
+                                //Console.WriteLine("Authentication error");
                             }
                             var nfcResponse = _nfcReader.CardReadData(blockAdress);
                             result = result + Encoding.Default.GetString(nfcResponse.Data);
                             blockAdress += 4;
+
+                            if (nfcResponse.Status == RFIDControllerMfrc522.Status.AllOk)
+                            {
+                                byteBlocksRead++;
+                            }
                         }
+
+                        if (byteBlocksRead == byteBlocksToRead)
+                        {
+                            Console.WriteLine("Read done");
+                            readDone = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Read error");
+                        }
+                        Console.WriteLine($"{byteBlocksRead} of {byteBlocksToRead} read");
                     }
                     finally
                     {
@@ -103,7 +124,7 @@ namespace CCT.NfcReaderConsole
                     }
                 }
             }
-            return (cardDetected, result);
+            return (cardDetected, readDone, result);
         }
 
         public static void ResetSignals()
@@ -116,7 +137,7 @@ namespace CCT.NfcReaderConsole
             }
         }
 
-        internal static bool WriteTagRC522(string nfcNewDataContent)
+        internal static (bool, bool) WriteTagRC522(string nfcNewDataContent)
         {
             if (_initDone == false)
                 Init();
@@ -131,23 +152,21 @@ namespace CCT.NfcReaderConsole
                 if (uidResponse.Status == RFIDControllerMfrc522.Status.AllOk)
                 {
                     var cardUid = uidResponse.Data;
-                    PrintUid(cardUid, uidResponse.DataBitLength);
+                    //PrintUid(cardUid, uidResponse.DataBitLength);
                     _nfcReader.SelectCardUniqueId(cardUid);
                     int byteBlocksToWrite = 7; // 7 * 16 bytes = 112 bytes
                     int byteBlocksWritten = 0;
 
                     try
                     {
-                        bool authOn = false;
-
                         // Write data to sectors
                         byte blockAdress = 4;
 
                         for (int i = 0; i < byteBlocksToWrite; i++)
                         {
-                            if (authOn && _nfcReader.AuthenticateCard1A(RFIDControllerMfrc522.DefaultAuthKey, cardUid, (byte)(blockAdress + 3)) != RFIDControllerMfrc522.Status.AllOk)
+                            if (_authOn && _nfcReader.AuthenticateCard1A(RFIDControllerMfrc522.DefaultAuthKey, cardUid, (byte)(blockAdress + 3)) != RFIDControllerMfrc522.Status.AllOk)
                             {
-                                Console.WriteLine("Authentication error");
+                                //Console.WriteLine("Authentication error");
                             }
                             string data = string.Concat(nfcNewDataContent.Skip(i * 16).Take(16));
                             data = (data + new string(' ', 16)).Truncate(16);
@@ -179,7 +198,7 @@ namespace CCT.NfcReaderConsole
                     }
                 }
             }
-            return writeDone;
+            return (cardDetected, writeDone);
         }
 
         internal static void PrintUid(byte[] cardUid, byte dataBitLength)

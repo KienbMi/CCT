@@ -274,12 +274,12 @@ namespace ufr_mfp_console
 
             Functions_RC522.InvertLedSignal();
 
-            (bool cardDetected, string nfcDataContent) = Functions_RC522.ReadTagFromRC522();
+            (bool cardDetected, bool readDone, string nfcDataContent) = Functions_RC522.ReadTagFromRC522();
 
             // data from reader received ?
-            if (string.IsNullOrEmpty(nfcDataContent) == false && card_in_field == 0)
+            if (string.IsNullOrEmpty(nfcDataContent) == false && readDone && card_in_field == 0)
             {
-                card_in_field = 2;
+                card_in_field = 3;
                 Person person = FunctionsCCT.ParseNfcDataToPerson(nfcDataContent);
 
                 if (person != null)
@@ -305,7 +305,7 @@ namespace ufr_mfp_console
             else if (card_in_field > 0)
             {
                 if (cardDetected)
-                    card_in_field = 2;
+                    card_in_field = 3;
                 else
                     card_in_field--;
             }
@@ -324,7 +324,7 @@ namespace ufr_mfp_console
 
             if (!string.IsNullOrEmpty(nfcNewDataContent))
             {
-                bool done = Functions_RC522.WriteTagRC522(nfcNewDataContent);
+                (_ , bool done) = Functions_RC522.WriteTagRC522(nfcNewDataContent);
                 
                 if(done)
                 {
