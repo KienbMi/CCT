@@ -18,6 +18,7 @@ namespace CCT.NfcReaderConsole
         static IGpioPin _pulsePin;
         static RFIDControllerMfrc522 _nfcReader;
         static bool _authOn = true;
+        static int countPeriode = 0;
 
         public static void Init()
         {
@@ -46,6 +47,7 @@ namespace CCT.NfcReaderConsole
                 Init();
 
             var isOn = _blinkingPin.Read();
+
             if (isOn)
             {
                 _blinkingPin.Write(false);
@@ -53,6 +55,17 @@ namespace CCT.NfcReaderConsole
             else
             {
                 _blinkingPin.Write(true);
+            }
+        }
+
+        public static void InvertLedSignal(uint periodeFactor)
+        {
+            countPeriode++;
+
+            if(countPeriode >= periodeFactor)
+            {
+                InvertLedSignal();
+                countPeriode = 0;
             }
         }
 
