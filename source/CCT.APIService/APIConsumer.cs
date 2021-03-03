@@ -18,7 +18,7 @@ namespace CCT.APIService
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.7.0 (NJsonSchema v10.3.9.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class PersonsClient 
     {
-        private string _baseUrl = "https://localhost:5001";
+        private string _baseUrl = "http://localhost:5000";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
         public PersonsClient()
@@ -649,7 +649,7 @@ namespace CCT.APIService
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.7.0 (NJsonSchema v10.3.9.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class SettingsClient 
     {
-        private string _baseUrl = "https://localhost:5001";
+        private string _baseUrl = "http://localhost:5000";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
         public SettingsClient()
