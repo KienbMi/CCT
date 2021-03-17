@@ -66,10 +66,16 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
+            if(PhoneNumber[0] != '0' || PhoneNumber[0] != '+')
+            {
+                ModelState.AddModelError(nameof(PhoneNumber), "Geben Sie eine gültige Telefonnummer ein! Beginnend mit +43 oder 06..");
+                return Page();
+            }
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(PhoneNumber))
             {
                 ErrorMessage = "Alle Felder müssen ausgefüllt sein!";
                 ModelState.AddModelError("", "Alle Felder müssen ausgefüllt sein!");
+                return Page();
             }
             else
             {

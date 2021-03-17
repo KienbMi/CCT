@@ -32,9 +32,7 @@ namespace CCT.WebAPI.Helper
 
                     formattedPhoneNumber += phoneNumber[i];
                 }
-            }
-
-            if(phoneNumber[0] == '0')
+            } else if(phoneNumber[0] == '0')
             {
                 for (int i = 0; i < phoneNumber.Length; i++)
                 {

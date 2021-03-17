@@ -60,7 +60,12 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
-            if(ModelState.IsValid)
+            if (PhoneNumber[0] != '0' || PhoneNumber[0] != '+')
+            {
+                ModelState.AddModelError(nameof(PhoneNumber), "Geben Sie eine gültige Telefonnummer ein! Beginnend mit +43 oder 06..");
+                return Page();
+            }
+            if (ModelState.IsValid)
             {
                 try
                 {
