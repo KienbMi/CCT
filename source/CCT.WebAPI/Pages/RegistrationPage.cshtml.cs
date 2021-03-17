@@ -50,8 +50,8 @@ namespace CCT.WebAPI.Pages
             _uow = unitOfWork;
             _pc = new PersonsClient();
             _sc = new SettingsClient();
-            LastTestedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            LastTestedTime = new TimeSpan(DateTime.Now.TimeOfDay.Ticks);
+            //LastTestedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            //LastTestedTime = new TimeSpan(DateTime.Now.TimeOfDay.Ticks);
         }
 
         public async Task OnGetAsync()
@@ -60,12 +60,12 @@ namespace CCT.WebAPI.Pages
 
         public async Task<ActionResult> OnPostAsync()
         {
-            if (PhoneNumber[0] != '0' && PhoneNumber[0] != '+')
+            if (!string.IsNullOrEmpty(PhoneNumber) && PhoneNumber[0] != '0' && PhoneNumber[0] != '+')
             {
                 ModelState.AddModelError(nameof(PhoneNumber), "Geben Sie eine gültige Telefonnummer ein! Beginnend mit +43 oder 06..");
                 return Page();
             }
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || (ModelState.ErrorCount == 1 && ModelState[nameof(LastTestedDate)].Errors.Count > 0))
             {
                 try
                 {
