@@ -320,7 +320,7 @@ namespace ufr_mfp_console
             if (actEnvironment == null || actEnvironment.StartsWith("RPI") == false)
                 return;
 
-            Functions_RC522.InvertLedSignal();
+            Functions_RC522.InvertLedSignal(2);
 
             if (!string.IsNullOrEmpty(nfcNewDataContent))
             {

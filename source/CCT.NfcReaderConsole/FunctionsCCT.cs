@@ -46,9 +46,9 @@ namespace CCT.NfcReaderConsole
                 person.IsVaccinated = true;
             }
 
-            if (data.Length > IDX_LASTTESTED + 1)
+            if (data.Length > IDX_LASTTESTED + 1 && DateTime.TryParse(data[IDX_LASTTESTED], out var date))
             {
-                person.LastTested = DateTime.Parse(data[IDX_LASTTESTED]);
+                person.LastTested = date;
             }
 
             return person;
