@@ -1546,7 +1546,7 @@ namespace CCT.APIService
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.9.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum NfcReaderType
     {
-        UFr = 1,
+        uFr = 1,
     
         RC522 = 2,
     
